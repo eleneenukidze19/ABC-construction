@@ -1,0 +1,142 @@
+@model ProjectListViewModel
+@{
+    ViewData["Title"] = "Projects";
+    ViewData["Description"] = "Completed construction projects by ABC Construction — commercial, residential and industrial work with durations and completion dates.";
+
+    // Keeps the active category when paging, so filter state survives navigation.
+    string PageUrl(int page) =>
+        string.IsNullOrWhiteSpace(Model.SelectedCategory)
+            ? $"/projects?page={page}"
+            : $"/projects?page={page}&category={Uri.EscapeDataString(Model.SelectedCategory)}";
+}
+
+<section class="detail-hero">
+    <div class="container">
+        <p class="eyebrow">Our work</p>
+        <h1>Projects</h1>
+        <p class="hero__lead" style="margin-bottom:0;">
+            Completed work, with the duration each job actually took and the
+            month it was handed over.
+        </p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        @if (Model.Categories.Count > 0)
+        {
+            @* Links, not JS — every filter is a real, shareable URL *@
+            <nav class="filter-bar" aria-label="Filter projects by category">
+                <a class="filter-chip"
+                   href="/projects"
+                   aria-current="@(string.IsNullOrWhiteSpace(Model.SelectedCategory) ? "true" : null)">
+                    All work
+                </a>
+
+                @foreach (var category in Model.Categories)
+                {
+                    var isSelected = string.Equals(category, Model.SelectedCategory, StringComparison.OrdinalIgnoreCase);
+                    <a class="filter-chip"
+                       href="/projects?category=@Uri.EscapeDataString(category)"
+                       aria-current="@(isSelected ? "true" : null)">
+                        @category
+                    </a>
+                }
+            </nav>
+        }
+
+        @if (Model.Projects.Count > 0)
+        {
+            @* Card titles are h3. Without this the page would jump h1 -> h3,
+               so the grid gets a real (if visually redundant) section heading. *@
+            <h2 class="visually-hidden">
+                @(string.IsNullOrWhiteSpace(Model.SelectedCategory)
+                    ? "All projects"
+                    : $"{Model.SelectedCategory} projects")
+            </h2>
+
+            @* role="status" so filtering announces the new result count *@
+            <p class="visually-hidden" role="status">
+                Showing @Model.Projects.Count of @Model.TotalCount projects.
+            </p>
+
+            <div class="card-grid">
+                @foreach (var project in Model.Projects)
+                {
+                    <partial name="_ProjectCard" model="project" />
+                }
+            </div>
+
+            @if (Model.TotalPages > 1)
+            {
+                <nav class="pagination" aria-label="Project pages">
+                    @if (Model.HasPrevious)
+                    {
+                        <a class="btn btn--secondary btn--sm" href="@PageUrl(Model.Page - 1)" rel="prev">
+                            &larr; Previous
+                        </a>
+                    }
+                    else
+                    {
+                        <span class="btn btn--secondary btn--sm" aria-disabled="true">&larr; Previous</span>
+                    }
+
+                    <span class="pagination__status tnum">
+                        Page @Model.Page of @Model.TotalPages
+                    </span>
+
+                    @if (Model.HasNext)
+                    {
+                        <a class="btn btn--secondary btn--sm" href="@PageUrl(Model.Page + 1)" rel="next">
+                            Next &rarr;
+                        </a>
+                    }
+                    else
+                    {
+                        <span class="btn btn--secondary btn--sm" aria-disabled="true">Next &rarr;</span>
+                    }
+                </nav>
+            }
+        }
+        else
+        {
+            <div class="empty-state">
+                <h2>
+                    @(string.IsNullOrWhiteSpace(Model.SelectedCategory)
+                        ? "No projects published yet"
+                        : "Nothing in this category")
+                </h2>
+                <p>
+                    @if (string.IsNullOrWhiteSpace(Model.SelectedCategory))
+                    {
+                        <text>Projects added through the admin panel will appear here.</text>
+                    }
+                    else
+                    {
+                        <text>There are no projects filed under &ldquo;@Model.SelectedCategory&rdquo; yet.</text>
+                    }
+                </p>
+
+                @if (!string.IsNullOrWhiteSpace(Model.SelectedCategory))
+                {
+                    <a class="btn btn--primary" href="/projects">Show all projects</a>
+                }
+            </div>
+        }
+    </div>
+</section>
+
+<section class="cta-band">
+    <div class="container cta-band__inner">
+        <div>
+            <h2>Want something similar built?</h2>
+            <p>Tell us what you are planning and we will give you a straight answer on cost and programme.</p>
+        </div>
+        <div class="hero__actions">
+            <a class="btn btn--primary" href="/contact">
+                Request a quote
+                <span class="btn__arrow" aria-hidden="true">&rarr;</span>
+            </a>
+        </div>
+    </div>
+</section>

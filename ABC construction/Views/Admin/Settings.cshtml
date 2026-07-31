@@ -1,0 +1,81 @@
+@model CompanySettingsViewModel
+@{
+    ViewData["Title"] = "Company settings";
+    Layout = "_AdminLayout";
+}
+
+<div class="admin-head">
+    <div>
+        <h1>Company settings</h1>
+        <p>These details appear on the public contact page and in the footer.</p>
+    </div>
+    <div class="admin-head__actions">
+        <a class="btn btn--secondary" href="/contact" target="_blank" rel="noopener">
+            View contact page<span class="visually-hidden"> (opens in a new tab)</span>
+        </a>
+    </div>
+</div>
+
+<section class="panel">
+    <div class="panel__body">
+        @* Token emitted explicitly (and the tag helper told to stand down) so
+           exactly one is present regardless of tag-helper defaults for forms
+           that use a raw action attribute. AutoValidateAntiforgeryToken is
+           global, so a missing token would 400 every save. *@
+        <form method="post" action="/admin/settings" asp-antiforgery="false" data-submit-guard>
+            @Html.AntiForgeryToken()
+            @* Summary lists every error and anchors to the field, per WCAG *@
+            <div asp-validation-summary="ModelOnly" class="alert alert--error" role="alert"></div>
+
+            <div class="form-grid form-grid--2">
+                <div class="field">
+                    <label asp-for="Email">
+                        Public email address
+                        <span class="req" aria-hidden="true">*</span>
+                        <span class="visually-hidden">(required)</span>
+                    </label>
+                    <input asp-for="Email" type="text" autocomplete="email" required />
+                    <span class="field__help">
+                        Shown as a mailto link. Leave as &ldquo;unwritten&rdquo; to keep it unpublished.
+                    </span>
+                    <span class="field__error" asp-validation-for="Email"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="PhoneNumber">
+                        Public phone number
+                        <span class="req" aria-hidden="true">*</span>
+                        <span class="visually-hidden">(required)</span>
+                    </label>
+                    <input asp-for="PhoneNumber" type="text" autocomplete="tel" inputmode="tel" required />
+                    <span class="field__help">Shown as a tap-to-call link on mobile.</span>
+                    <span class="field__error" asp-validation-for="PhoneNumber"></span>
+                </div>
+
+                <div class="field field--full">
+                    <label asp-for="Address">
+                        Business address
+                        <span class="req" aria-hidden="true">*</span>
+                        <span class="visually-hidden">(required)</span>
+                    </label>
+                    <input asp-for="Address" type="text" autocomplete="street-address" required />
+                    <span class="field__error" asp-validation-for="Address"></span>
+                </div>
+
+                <div class="field field--full">
+                    <label asp-for="Description">Company description</label>
+                    <textarea asp-for="Description" rows="6"></textarea>
+                    <span class="field__help">
+                        Optional. Appears on the contact page. Line breaks are preserved.
+                    </span>
+                    <span class="field__error" asp-validation-for="Description"></span>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn btn--primary" type="submit" data-busy-text="Saving…">Save changes</button>
+                <a class="btn btn--secondary" href="/admin/dashboard">Cancel</a>
+            </div>
+        </form>
+    </div>
+</section>

@@ -1,0 +1,182 @@
+@{
+    var current = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+    var action = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
+
+    string? NavState(string controller) =>
+        string.Equals(current, controller, StringComparison.OrdinalIgnoreCase) ? "page" : null;
+
+    // Dashboard and Settings share the Admin controller, so the marker keys off
+    // the action instead of the controller name.
+    string? AdminNavState(string targetAction) =>
+        string.Equals(current, "Admin", StringComparison.OrdinalIgnoreCase)
+        && string.Equals(action, targetAction, StringComparison.OrdinalIgnoreCase)
+            ? "page"
+            : null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] — ABC Construction admin</title>
+    @* Admin pages must never be indexed *@
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href="~/images/favicon.svg" type="image/svg+xml" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" />
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+</head>
+<body class="admin-body">
+    <a class="skip-link" href="#admin-main">Skip to main content</a>
+
+    <div class="admin-shell">
+        <aside class="admin-sidebar">
+            <div class="admin-sidebar__head">
+                <a class="brand" href="/admin/dashboard">
+                    <span class="brand__mark" aria-hidden="true">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" aria-hidden="true">
+                            <path d="M3 21h18" /><path d="M5 21V9l7-5 7 5v12" /><path d="M10 21v-6h4v6" />
+                        </svg>
+                    </span>
+                    <span class="brand__name">Admin</span>
+                </a>
+
+                <button class="admin-sidebar__toggle"
+                        type="button"
+                        aria-expanded="false"
+                        aria-controls="admin-nav"
+                        aria-label="Open menu"
+                        data-admin-nav-toggle>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                        <path d="M4 7h16M4 12h16M4 17h16" />
+                    </svg>
+                </button>
+            </div>
+
+            <nav class="admin-nav" id="admin-nav" data-open="false" aria-label="Admin">
+                <p class="admin-nav__heading">Overview</p>
+                <ul class="admin-nav__group">
+                    <li>
+                        <a class="admin-nav__link" href="/admin/dashboard" aria-current="@AdminNavState("Dashboard")">
+                            <svg class="admin-nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <rect x="3" y="3" width="7" height="9" /><rect x="14" y="3" width="7" height="5" />
+                                <rect x="14" y="12" width="7" height="9" /><rect x="3" y="16" width="7" height="5" />
+                            </svg>
+                            Dashboard
+                        </a>
+                    </li>
+                </ul>
+
+                <p class="admin-nav__heading">Content</p>
+                <ul class="admin-nav__group">
+                    <li>
+                        <a class="admin-nav__link" href="/admin/projects" aria-current="@NavState("AdminProjects")">
+                            <svg class="admin-nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path d="M3 21h18" /><path d="M5 21V9l7-5 7 5v12" /><path d="M10 21v-6h4v6" />
+                            </svg>
+                            Projects
+                        </a>
+                    </li>
+                    <li>
+                        <a class="admin-nav__link" href="/admin/employees" aria-current="@NavState("AdminEmployees")">
+                            <svg class="admin-nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <circle cx="9" cy="8" r="3.5" /><path d="M2.5 20a6.5 6.5 0 0 1 13 0" />
+                                <path d="M16 5.5a3.5 3.5 0 0 1 0 7M17 14.2a6.5 6.5 0 0 1 4.5 5.8" />
+                            </svg>
+                            Employees
+                        </a>
+                    </li>
+                </ul>
+
+                <p class="admin-nav__heading">Company</p>
+                <ul class="admin-nav__group">
+                    <li>
+                        <a class="admin-nav__link" href="/admin/settings" aria-current="@AdminNavState("Settings")">
+                            <svg class="admin-nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <circle cx="12" cy="12" r="3" />
+                                <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2V21a2 2 0 1 1-4 0v-.1A1.7 1.7 0 0 0 7 19.4a1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0-1.2-2.9H1a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 2.6 7a1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 2.9-1.2V1a2 2 0 1 1 4 0v.1A1.7 1.7 0 0 0 17 2.6a1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0 1.2 2.9H23a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1.7z" transform="translate(0.5 0.5) scale(0.92)" />
+                            </svg>
+                            Company settings
+                        </a>
+                    </li>
+                </ul>
+
+                <p class="admin-nav__heading">Access</p>
+                <ul class="admin-nav__group">
+                    <li>
+                        <a class="admin-nav__link" href="/admin/users" aria-current="@NavState("AdminUsers")">
+                            <svg class="admin-nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <circle cx="12" cy="8" r="3.5" />
+                                <path d="M5.5 20a6.5 6.5 0 0 1 13 0" />
+                            </svg>
+                            Administrators
+                        </a>
+                    </li>
+                </ul>
+
+                <p class="admin-nav__heading">Public site</p>
+                <ul class="admin-nav__group">
+                    <li>
+                        <a class="admin-nav__link" href="/" target="_blank" rel="noopener">
+                            <svg class="admin-nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                                <path d="M15 3h6v6M10 14 21 3" />
+                            </svg>
+                            View site
+                            <span class="visually-hidden">(opens in a new tab)</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="admin-sidebar__foot">
+                <p class="admin-sidebar__user">
+                    Signed in as
+                    <strong>@User.Identity?.Name</strong>
+                </p>
+
+                @* Sign-out is a POST so it cannot be triggered by a stray link *@
+                <form method="post" action="/admin/logout" asp-antiforgery="false">
+                    @Html.AntiForgeryToken()
+                    <button class="btn btn--secondary btn--sm" type="submit">Sign out</button>
+                </form>
+            </div>
+        </aside>
+
+        <main class="admin-main" id="admin-main">
+            <div class="admin-main__inner">
+                @* Post-redirect-get feedback banner *@
+                @if (TempData["Success"] is string successMessage)
+                {
+                    <div class="alert alert--success" role="status">
+                        <svg class="alert__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                            <path d="m20 6-11 11-5-5" />
+                        </svg>
+                        <span class="alert__body">@successMessage</span>
+                    </div>
+                }
+
+                @if (TempData["Error"] is string errorMessage)
+                {
+                    <div class="alert alert--error" role="alert">
+                        <svg class="alert__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                            <circle cx="12" cy="12" r="10" /><path d="M12 7v6M12 16h.01" />
+                        </svg>
+                        <span class="alert__body">@errorMessage</span>
+                    </div>
+                }
+
+                @RenderBody()
+            </div>
+        </main>
+    </div>
+
+    <script src="~/js/admin.js" asp-append-version="true" defer></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

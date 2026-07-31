@@ -1,0 +1,487 @@
+/* ==========================================================================
+   ABC Construction — admin panel
+   --------------------------------------------------------------------------
+   Loaded after site.css and reuses its tokens. The admin is a denser, calmer
+   surface than the public site: the yellow is pulled back to markers and the
+   active nav state only, so operators are not staring at high-chroma panels
+   all day. Structure still comes from black rules rather than soft shadows.
+   ========================================================================== */
+
+.admin-body {
+    background: var(--bg-sunken);
+    min-height: 100vh;
+    min-height: 100dvh;
+}
+
+/* --------------------------------------------------------------------------
+   1. Shell
+   -------------------------------------------------------------------------- */
+.admin-shell {
+    display: grid;
+    grid-template-columns: 1fr;
+    min-height: 100dvh;
+}
+
+@media (min-width: 1024px) {
+    /* Sidebar at >=1024px, top bar below — adaptive navigation */
+    .admin-shell { grid-template-columns: 16rem minmax(0, 1fr); }
+}
+
+.admin-sidebar {
+    background: var(--c-black);
+    color: var(--c-white);
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 1024px) {
+    .admin-sidebar { position: sticky; top: 0; height: 100dvh; }
+}
+
+.admin-sidebar__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-3);
+    padding: var(--sp-4);
+    border-bottom: var(--rule) solid rgb(255 255 255 / 0.2);
+}
+
+.admin-sidebar__head .brand { color: var(--c-white); font-size: var(--fs-lg); }
+
+.admin-sidebar__toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    background: transparent;
+    border: var(--rule) solid var(--c-white);
+    border-radius: var(--radius);
+    color: var(--c-white);
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+@media (min-width: 1024px) { .admin-sidebar__toggle { display: none; } }
+
+.admin-nav { display: none; padding: var(--sp-3) 0; flex: 1; }
+.admin-nav[data-open="true"] { display: block; }
+
+@media (min-width: 1024px) { .admin-nav { display: block; } }
+
+.admin-nav__group { list-style: none; margin: 0 0 var(--sp-5); padding: 0; }
+
+.admin-nav__heading {
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--c-grey-400);
+    padding: 0 var(--sp-4) var(--sp-2);
+    margin: 0;
+}
+
+.admin-nav__link {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    min-height: 2.75rem;
+    padding: 0 var(--sp-4);
+    color: var(--c-grey-200);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    text-decoration: none;
+    border-left: var(--rule-heavy) solid transparent;
+    transition: background-color var(--dur) var(--ease-out), color var(--dur) var(--ease-out);
+}
+
+.admin-nav__link:hover { background: rgb(255 255 255 / 0.08); color: var(--c-white); }
+
+/* Active destination: yellow rule + white text + weight, not colour alone */
+.admin-nav__link[aria-current="page"] {
+    border-left-color: var(--c-yellow);
+    background: rgb(255 255 255 / 0.10);
+    color: var(--c-white);
+    font-weight: 700;
+}
+
+.admin-nav__icon { flex: none; width: 1.125rem; height: 1.125rem; }
+
+.admin-sidebar__foot {
+    padding: var(--sp-4);
+    border-top: var(--rule) solid rgb(255 255 255 / 0.2);
+    font-size: var(--fs-sm);
+}
+
+.admin-sidebar__user { color: var(--c-grey-200); margin-bottom: var(--sp-3); }
+.admin-sidebar__user strong { color: var(--c-white); display: block; word-break: break-word; }
+
+/* Sign out sits apart from navigation — destructive/exit actions separated */
+.admin-sidebar__foot .btn { width: 100%; }
+
+.admin-main { min-width: 0; padding: var(--sp-5) var(--sp-4) var(--sp-8); }
+
+@media (min-width: 768px) { .admin-main { padding: var(--sp-6) var(--sp-6) var(--sp-9); } }
+
+.admin-main__inner { max-width: 68rem; margin-inline: auto; }
+
+/* --------------------------------------------------------------------------
+   2. Page header
+   -------------------------------------------------------------------------- */
+.admin-head {
+    display: grid;
+    gap: var(--sp-4);
+    margin-bottom: var(--sp-6);
+    padding-bottom: var(--sp-4);
+    border-bottom: var(--rule) solid var(--border-strong);
+}
+
+@media (min-width: 768px) {
+    .admin-head { grid-template-columns: 1fr auto; align-items: end; }
+}
+
+.admin-head h1 { font-size: var(--fs-3xl); margin-bottom: var(--sp-1); }
+.admin-head p { color: var(--text-secondary); margin: 0; }
+.admin-head__actions { display: flex; flex-wrap: wrap; gap: var(--sp-3); }
+
+/* --------------------------------------------------------------------------
+   3. Stat tiles
+   -------------------------------------------------------------------------- */
+.stat-grid {
+    display: grid;
+    gap: var(--sp-4);
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    margin-bottom: var(--sp-6);
+}
+
+.stat-tile {
+    background: var(--c-white);
+    border: var(--rule) solid var(--border-strong);
+    border-radius: var(--radius);
+    padding: var(--sp-4);
+}
+
+.stat-tile__label {
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+}
+
+.stat-tile__value {
+    font-family: var(--font-display);
+    font-size: var(--fs-3xl);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-top: var(--sp-2);
+    font-variant-numeric: tabular-nums;
+}
+
+.stat-tile__note { font-size: var(--fs-xs); color: var(--text-secondary); margin-top: var(--sp-1); }
+
+/* --------------------------------------------------------------------------
+   4. Panels
+   -------------------------------------------------------------------------- */
+.panel {
+    background: var(--c-white);
+    border: var(--rule) solid var(--border-strong);
+    border-radius: var(--radius);
+    margin-bottom: var(--sp-5);
+}
+
+.panel__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-3);
+    padding: var(--sp-4);
+    border-bottom: var(--rule) solid var(--border-strong);
+}
+
+.panel__head h2 { font-size: var(--fs-lg); margin: 0; }
+.panel__body { padding: var(--sp-4); }
+
+/* --------------------------------------------------------------------------
+   5. Data table — scrolls inside its own container, never the page
+   -------------------------------------------------------------------------- */
+.table-wrap { overflow-x: auto; }
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--fs-sm);
+    min-width: 40rem;
+}
+
+.data-table th,
+.data-table td {
+    text-align: left;
+    padding: var(--sp-3) var(--sp-4);
+    border-bottom: 1px solid var(--border-default);
+    vertical-align: middle;
+}
+
+.data-table thead th {
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    background: var(--bg-sunken);
+    border-bottom: var(--rule) solid var(--border-strong);
+    white-space: nowrap;
+}
+
+.data-table tbody tr:hover { background: var(--bg-sunken); }
+.data-table td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.data-table__thumb {
+    width: 3.5rem;
+    height: 2.5rem;
+    object-fit: cover;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius);
+}
+
+.row-actions { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+
+/* --------------------------------------------------------------------------
+   6. Badges — icon/text carries the meaning, colour only reinforces
+   -------------------------------------------------------------------------- */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-1);
+    padding: 2px var(--sp-2);
+    border: 1px solid currentColor;
+    border-radius: var(--radius);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.badge--live { color: var(--c-success); background: var(--c-success-bg); }
+.badge--hidden { color: var(--c-grey-600); background: var(--c-grey-100); }
+.badge--locked { color: var(--c-danger); background: var(--c-danger-bg); }
+
+/* Role chips wrap rather than stretch the column when a user holds several */
+.data-table .badge + .badge { margin-left: var(--sp-1); }
+
+/* --------------------------------------------------------------------------
+   7. Forms
+   -------------------------------------------------------------------------- */
+.form-grid {
+    display: grid;
+    gap: var(--sp-5);
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+    .form-grid--2 { grid-template-columns: repeat(2, 1fr); }
+    .field--full { grid-column: 1 / -1; }
+}
+
+.field { display: flex; flex-direction: column; gap: var(--sp-2); }
+
+.field label {
+    font-size: var(--fs-sm);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+/* Required marker is a glyph plus an sr-only word, not colour alone */
+.field label .req { color: var(--c-danger); margin-left: 2px; }
+
+.field input[type="text"],
+.field input[type="email"],
+.field input[type="password"],
+.field input[type="number"],
+.field input[type="date"],
+.field input[type="file"],
+.field select,
+.field textarea {
+    width: 100%;
+    min-height: 2.75rem;
+    padding: var(--sp-3);
+    font-family: var(--font-body);
+    font-size: var(--fs-base);   /* 16px — stops iOS zoom-on-focus */
+    color: var(--text-primary);
+    background: var(--c-white);
+    border: var(--rule) solid var(--c-grey-400);
+    border-radius: var(--radius);
+    transition: border-color var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+}
+
+.field textarea { min-height: 8rem; resize: vertical; line-height: var(--lh-body); }
+
+.field input:hover,
+.field select:hover,
+.field textarea:hover { border-color: var(--c-grey-600); }
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+    border-color: var(--c-black);
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 1px;
+}
+
+/* Helper text is persistent — not a placeholder that vanishes on focus */
+.field__help { font-size: var(--fs-xs); color: var(--text-secondary); }
+
+.field__error {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--sp-2);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    color: var(--c-danger);
+}
+
+.field__error:empty { display: none; }
+
+.field input.input-validation-error,
+.field select.input-validation-error,
+.field textarea.input-validation-error { border-color: var(--c-danger); }
+
+.checkbox-field {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--sp-3);
+    min-height: 2.75rem;
+    padding: var(--sp-2) 0;
+}
+
+.checkbox-field input[type="checkbox"] { width: 1.25rem; height: 1.25rem; margin-top: 2px; flex: none; }
+.checkbox-field label { font-weight: 600; }
+
+.form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-3);
+    align-items: center;
+    margin-top: var(--sp-6);
+    padding-top: var(--sp-5);
+    border-top: var(--rule) solid var(--border-default);
+}
+
+/* Destructive action pushed away from the primary save */
+.form-actions__spacer { margin-left: auto; }
+
+/* --------------------------------------------------------------------------
+   8. Validation summary + alerts
+   -------------------------------------------------------------------------- */
+.alert {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--sp-3);
+    padding: var(--sp-4);
+    border: var(--rule) solid currentColor;
+    border-radius: var(--radius);
+    margin-bottom: var(--sp-5);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+}
+
+.alert__icon { flex: none; width: 1.25rem; height: 1.25rem; margin-top: 1px; }
+.alert__body { color: var(--text-primary); font-weight: 500; }
+.alert__body strong { display: block; margin-bottom: var(--sp-1); }
+
+.alert--error { color: var(--c-danger); background: var(--c-danger-bg); }
+.alert--success { color: var(--c-success); background: var(--c-success-bg); }
+.alert--info { color: var(--c-grey-800); background: var(--c-yellow); border-color: var(--c-black); }
+
+.alert ul { margin: 0; padding-left: var(--sp-5); }
+.alert a { color: inherit; }
+
+/* ASP.NET renders this element even when empty; hide it until it has content */
+.validation-summary-valid { display: none; }
+
+/* --------------------------------------------------------------------------
+   9. Image upload preview
+   -------------------------------------------------------------------------- */
+.upload-field { display: grid; gap: var(--sp-3); }
+
+.upload-preview {
+    width: 100%;
+    max-width: 18rem;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    background: var(--bg-sunken);
+    border: var(--rule) dashed var(--border-default);
+    border-radius: var(--radius);
+}
+
+.upload-preview[hidden] { display: none; }
+
+.gallery-admin {
+    display: grid;
+    gap: var(--sp-3);
+    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+}
+
+.gallery-admin__item {
+    border: var(--rule) solid var(--border-strong);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--c-white);
+}
+
+.gallery-admin__item img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
+.gallery-admin__bar { padding: var(--sp-2); }
+
+/* --------------------------------------------------------------------------
+   10. Login screen
+   -------------------------------------------------------------------------- */
+.login-page {
+    display: grid;
+    place-items: center;
+    min-height: 100dvh;
+    background: var(--c-black);
+    padding: var(--sp-5) var(--sp-4);
+}
+
+.login-card {
+    width: 100%;
+    max-width: 25rem;
+    background: var(--c-white);
+    border: var(--rule) solid var(--c-black);
+    border-radius: var(--radius);
+}
+
+.login-card__head {
+    padding: var(--sp-5);
+    border-bottom: var(--rule) solid var(--c-black);
+}
+
+.login-card__head h1 { font-size: var(--fs-2xl); margin-bottom: var(--sp-1); }
+.login-card__head p { color: var(--text-secondary); font-size: var(--fs-sm); margin: 0; }
+
+.login-card__body { padding: var(--sp-5); display: grid; gap: var(--sp-5); }
+
+.login-back {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-2);
+    min-height: 2.75rem;
+    margin-top: var(--sp-4);
+    color: var(--c-grey-200);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   11. Empty state (admin variant)
+   -------------------------------------------------------------------------- */
+.admin-empty {
+    padding: var(--sp-8) var(--sp-5);
+    text-align: center;
+}
+
+.admin-empty h3 { font-size: var(--fs-xl); margin-bottom: var(--sp-2); }
+.admin-empty p { color: var(--text-secondary); max-width: 42ch; margin: 0 auto var(--sp-5); }

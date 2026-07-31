@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>ABC_construction</RootNamespace>
+    <!-- Keeps AdminSeed:Password out of the repository — it lives in the user
+         secrets store instead. See README section 5 / DatabaseSeeder. -->
+    <UserSecretsId>abc-construction-8f2c4d1e-5b93-4a17-9e6d-2c8b7a3f1d40</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.10">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.10">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <!-- Pinned above the transitive 2.0.0 to clear GHSA-v5pm-xwqc-g5wc (patched in 2.7.5).
+         Must stay on 2.x: 3.x makes IOpenApiMediaType.Example read-only, which breaks
+         the Microsoft.AspNetCore.OpenApi XML comment source generator. -->
+    <PackageReference Include="Microsoft.OpenApi" Version="2.7.5" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
+    <!-- Pinned above the 2.1.11 that EF Core's SQLite provider pulls in, to clear
+         GHSA-2m69-gcr7-jv3q (vulnerable bundled SQLite). The advisory lists no
+         fixed version because 2.1.12 shipped after it was filed. -->
+    <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3" Version="2.1.12" />
+  </ItemGroup>
+
+</Project>

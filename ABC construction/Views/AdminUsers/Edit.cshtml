@@ -1,0 +1,153 @@
+@model EditUserViewModel
+@{
+    ViewData["Title"] = "Edit administrator";
+    Layout = "_AdminLayout";
+}
+
+<div class="admin-head">
+    <div>
+        <h1>Edit administrator</h1>
+        <p>@Model.Email</p>
+    </div>
+    <div class="admin-head__actions">
+        <a class="btn btn--secondary" href="/admin/users">Back to list</a>
+    </div>
+</div>
+
+@if (Model.IsLockedOut)
+{
+    <div class="alert alert--error" role="status">
+        <svg class="alert__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <rect x="4" y="10" width="16" height="10" rx="1" /><path d="M8 10V7a4 4 0 0 1 8 0v3" />
+        </svg>
+        <span class="alert__body">
+            <strong>This account is locked out</strong>
+            Too many failed sign-in attempts.
+            @if (Model.LockoutEnd.HasValue)
+            {
+                <text>The lock lifts at @Model.LockoutEnd.Value.UtcDateTime.ToString("HH:mm 'on' d MMM yyyy", System.Globalization.CultureInfo.InvariantCulture) UTC.</text>
+            }
+            Use the unlock button on the
+            <a href="/admin/users">accounts list</a> to restore access now.
+        </span>
+    </div>
+}
+
+@if (Model.IsOnlyAdministrator)
+{
+    <div class="alert alert--info" role="status">
+        <svg class="alert__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" /><path d="M12 8v5M12 16h.01" />
+        </svg>
+        <span class="alert__body">
+            <strong>Only administrator</strong>
+            The Admin role cannot be removed from this account because it is the
+            last one. Grant Admin to another account first.
+        </span>
+    </div>
+}
+
+<section class="panel">
+    <div class="panel__body">
+        <form method="post" action="/admin/users/edit/@Model.Id" asp-antiforgery="false" data-submit-guard>
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="ModelOnly" class="alert alert--error" role="alert"></div>
+
+            <div class="form-grid form-grid--2">
+                <div class="field">
+                    <label asp-for="Email">
+                        Email address <span class="req" aria-hidden="true">*</span>
+                        <span class="visually-hidden">(required)</span>
+                    </label>
+                    <input asp-for="Email" type="email" inputmode="email" autocomplete="off" required />
+                    <span class="field__help">Changing this also changes the sign-in username.</span>
+                    <span class="field__error" asp-validation-for="Email"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="DisplayName">Display name</label>
+                    <input asp-for="DisplayName" type="text" autocomplete="off" />
+                    <span class="field__error" asp-validation-for="DisplayName"></span>
+                </div>
+
+                <fieldset class="field field--full" style="border:0; padding:0; margin:0;">
+                    <legend style="font-size: var(--fs-sm); font-weight: 700; padding:0;">Roles</legend>
+
+                    @foreach (var role in ApplicationRoles.All)
+                    {
+                        var isAdminRole = role == ApplicationRoles.Admin;
+                        var isHeld = Model.SelectedRoles.Contains(role);
+
+                        // Locked when removing it would strand the site or the
+                        // signed-in admin. The service rejects it regardless;
+                        // this stops the attempt earlier and explains why.
+                        var isLocked = isAdminRole && isHeld && (Model.IsOnlyAdministrator || Model.IsCurrentUser);
+
+                        <div class="checkbox-field">
+                            <input type="checkbox"
+                                   name="SelectedRoles"
+                                   value="@role"
+                                   id="role-@role"
+                                   checked="@(isHeld ? "checked" : null)"
+                                   disabled="@(isLocked ? "disabled" : null)" />
+                            <label for="role-@role">
+                                @role
+                                @if (isLocked)
+                                {
+                                    <span class="field__help" style="display:block; font-weight:500;">
+                                        @(Model.IsCurrentUser
+                                            ? "You cannot remove your own administrator role."
+                                            : "Cannot be removed from the last administrator.")
+                                    </span>
+                                }
+                            </label>
+                        </div>
+
+                        @* A disabled checkbox posts nothing, which would read as
+                           "role removed". This re-submits the value so the role
+                           survives the round trip. *@
+                        if (isLocked)
+                        {
+                            <input type="hidden" name="SelectedRoles" value="@role" />
+                        }
+                    }
+                </fieldset>
+            </div>
+
+            <h2 style="font-size: var(--fs-lg); margin: var(--sp-6) 0 var(--sp-4); padding-top: var(--sp-5); border-top: var(--rule) solid var(--border-default);">
+                Reset password
+            </h2>
+
+            <div class="form-grid form-grid--2">
+                <div class="field">
+                    <label asp-for="NewPassword">New password</label>
+                    <input asp-for="NewPassword" type="password" autocomplete="new-password" />
+                    <span class="field__help">
+                        Leave both fields blank to keep the current password.
+                        At least 10 characters with upper, lower, number and symbol.
+                    </span>
+                    <span class="field__error" asp-validation-for="NewPassword"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="ConfirmNewPassword">Confirm new password</label>
+                    <input asp-for="ConfirmNewPassword" type="password" autocomplete="new-password" />
+                    <span class="field__error" asp-validation-for="ConfirmNewPassword"></span>
+                </div>
+            </div>
+
+            @if (Model.IsCurrentUser)
+            {
+                <p class="field__help" style="margin-top: var(--sp-3);">
+                    Changing your own password signs you out of other browsers.
+                </p>
+            }
+
+            <div class="form-actions">
+                <button class="btn btn--primary" type="submit" data-busy-text="Saving…">Save changes</button>
+                <a class="btn btn--secondary" href="/admin/users">Cancel</a>
+            </div>
+        </form>
+    </div>
+</section>

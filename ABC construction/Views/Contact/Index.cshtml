@@ -1,0 +1,107 @@
+@model ContactViewModel
+@{
+    ViewData["Title"] = "Contact";
+    ViewData["Description"] = "Get in touch with ABC Construction to price a project or discuss a build.";
+}
+
+<section class="detail-hero">
+    <div class="container">
+        <p class="eyebrow">Get in touch</p>
+        <h1>Contact us</h1>
+        <p class="hero__lead" style="margin-bottom:0;">
+            Send drawings, a scope, or just a rough description. We will tell you
+            honestly whether we are the right contractor for the job.
+        </p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="contact-grid">
+            <div class="contact-card">
+                <h2 class="contact-card__label">Email</h2>
+                <p class="contact-card__value">
+                    @if (Model.IsEmailSet)
+                    {
+                        <a href="mailto:@Model.Email">@Model.Email</a>
+                    }
+                    else
+                    {
+                        @* Placeholder state carries an icon and words, never
+                           colour alone, and never a broken mailto: link. *@
+                        <span class="contact-card__pending">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                 stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M12 8v5M12 16h.01" />
+                            </svg>
+                            Not published yet
+                        </span>
+                    }
+                </p>
+            </div>
+
+            <div class="contact-card">
+                <h2 class="contact-card__label">Phone</h2>
+                <p class="contact-card__value">
+                    @if (Model.IsPhoneSet)
+                    {
+                        <a href="tel:@Model.PhoneNumber.Replace(" ", string.Empty)">@Model.PhoneNumber</a>
+                    }
+                    else
+                    {
+                        <span class="contact-card__pending">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                 stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M12 8v5M12 16h.01" />
+                            </svg>
+                            Not published yet
+                        </span>
+                    }
+                </p>
+            </div>
+
+            <div class="contact-card">
+                <h2 class="contact-card__label">Address</h2>
+                <p class="contact-card__value">
+                    @if (Model.IsAddressSet)
+                    {
+                        <span>@Model.Address</span>
+                    }
+                    else
+                    {
+                        <span class="contact-card__pending">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                 stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M12 8v5M12 16h.01" />
+                            </svg>
+                            Not published yet
+                        </span>
+                    }
+                </p>
+            </div>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(Model.Description))
+        {
+            <div class="prose" style="margin-top: var(--sp-7);">
+                <h2>About the company</h2>
+                <div class="detail-block__text">@Model.Description</div>
+            </div>
+        }
+
+        @if (!Model.IsEmailSet && !Model.IsPhoneSet && !Model.IsAddressSet)
+        {
+            @* Only shown while the site is still on seeded placeholders *@
+            <div class="empty-state" style="margin-top: var(--sp-7);">
+                <h2>Contact details are not set up yet</h2>
+                <p>
+                    An administrator can publish the company email, phone number
+                    and address from the admin panel under Company settings.
+                </p>
+            </div>
+        }
+    </div>
+</section>

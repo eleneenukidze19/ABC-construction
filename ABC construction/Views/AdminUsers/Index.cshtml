@@ -1,0 +1,125 @@
+@model AdminUserListViewModel
+@{
+    ViewData["Title"] = "Administrators";
+    Layout = "_AdminLayout";
+}
+
+<div class="admin-head">
+    <div>
+        <h1>Administrators</h1>
+        <p>Accounts that can sign in to this panel.</p>
+    </div>
+    <div class="admin-head__actions">
+        <a class="btn btn--primary" href="/admin/users/create">Add administrator</a>
+    </div>
+</div>
+
+@if (Model.AdministratorCount <= 1)
+{
+    @* Single point of failure: one forgotten password locks everyone out *@
+    <div class="alert alert--info" role="status">
+        <svg class="alert__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" /><path d="M12 8v5M12 16h.01" />
+        </svg>
+        <span class="alert__body">
+            <strong>Only one administrator account</strong>
+            If access to this account is lost, nobody can manage the site. Add a
+            second administrator so the account can be recovered.
+        </span>
+    </div>
+}
+
+<section class="panel">
+    <div class="table-wrap">
+        <table class="data-table">
+            <caption class="visually-hidden">All admin panel accounts</caption>
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Roles</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Created</th>
+                    <th scope="col"><span class="visually-hidden">Actions</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model.Users)
+                {
+                    <tr>
+                        <td>
+                            @user.DisplayNameOrEmail
+                            @if (user.IsCurrentUser)
+                            {
+                                <span class="badge badge--live" style="margin-left: var(--sp-2);">You</span>
+                            }
+                        </td>
+                        <td>@user.Email</td>
+                        <td>
+                            @if (user.HasNoRoles)
+                            {
+                                @* No role means they can sign in but reach nothing *@
+                                <span class="badge badge--hidden">No access</span>
+                            }
+                            else
+                            {
+                                foreach (var role in user.Roles)
+                                {
+                                    <span class="badge badge--live">@role</span>
+                                }
+                            }
+                        </td>
+                        <td>
+                            @if (user.IsLockedOut)
+                            {
+                                <span class="badge badge--locked">Locked out</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge--live">Active</span>
+                            }
+                        </td>
+                        <td class="num">
+                            @user.CreatedDate.ToString("d MMM yyyy", System.Globalization.CultureInfo.InvariantCulture)
+                        </td>
+                        <td>
+                            <div class="row-actions">
+                                <a class="btn btn--secondary btn--sm" href="/admin/users/edit/@user.Id">
+                                    Edit<span class="visually-hidden"> @user.DisplayNameOrEmail</span>
+                                </a>
+
+                                @if (user.IsLockedOut)
+                                {
+                                    <form method="post" action="/admin/users/unlock/@user.Id" asp-antiforgery="false">
+                                        @Html.AntiForgeryToken()
+                                        <button class="btn btn--secondary btn--sm" type="submit">
+                                            Unlock<span class="visually-hidden"> @user.DisplayNameOrEmail</span>
+                                        </button>
+                                    </form>
+                                }
+
+                                @if (user.IsCurrentUser)
+                                {
+                                    @* Explains the absence rather than silently hiding it *@
+                                    <span class="field__help">Cannot delete yourself</span>
+                                }
+                                else
+                                {
+                                    <form method="post"
+                                          action="/admin/users/delete/@user.Id"
+                                          asp-antiforgery="false"
+                                          data-confirm="Delete the account for @user.Email? They will lose access immediately. This cannot be undone.">
+                                        @Html.AntiForgeryToken()
+                                        <button class="btn btn--danger btn--sm" type="submit">
+                                            Delete<span class="visually-hidden"> @user.DisplayNameOrEmail</span>
+                                        </button>
+                                    </form>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>

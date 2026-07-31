@@ -1,0 +1,31 @@
+@model ProjectViewModel
+
+<article class="project-card">
+    <div class="project-card__media">
+        @* Explicit dimensions + lazy loading: reserves space, avoids layout shift *@
+        <img src="@Model.DisplayImageUrl"
+             alt="@Model.Title"
+             width="800" height="600"
+             loading="lazy" decoding="async" />
+        <span class="project-card__tag">@Model.Category</span>
+    </div>
+
+    <div class="project-card__body">
+        <h3 class="project-card__title">
+            <a href="/projects/@Model.Id">@Model.Title</a>
+        </h3>
+
+        <p class="project-card__desc">@Model.ShortDescription</p>
+
+        <dl class="project-card__meta">
+            <div>
+                <dt>Duration</dt>
+                <dd>@Model.Duration</dd>
+            </div>
+            <div>
+                <dt>Completed</dt>
+                <dd>@Model.CompletionDateDisplay</dd>
+            </div>
+        </dl>
+    </div>
+</article>

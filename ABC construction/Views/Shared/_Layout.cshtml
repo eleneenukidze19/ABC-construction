@@ -1,0 +1,130 @@
+@{
+    // Current controller drives the active nav marker, so it stays correct
+    // whether the user arrived by link, deep link or browser back.
+    var current = ViewContext.RouteData.Values["controller"]?.ToString() ?? "Home";
+
+    // Returning null omits the attribute entirely — Razor drops null-valued
+    // attributes, so inactive links get no aria-current at all.
+    string? NavState(string controller) =>
+        string.Equals(current, controller, StringComparison.OrdinalIgnoreCase) ? "page" : null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <!-- Zoom deliberately left enabled -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@(ViewData["Title"] is null ? "ABC Construction" : ViewData["Title"] + " — ABC Construction")</title>
+    <meta name="description" content="@(ViewData["Description"] ?? "ABC Construction delivers commercial, residential and industrial building work — planned properly, built to last.")" />
+    <meta name="theme-color" content="#0A0A0A" />
+
+    <link rel="icon" href="~/images/favicon.svg" type="image/svg+xml" />
+
+    @* display=swap avoids invisible text while the webfont loads *@
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" />
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @await RenderSectionAsync("Head", required: false)
+</head>
+<body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+
+    <header class="site-header">
+        <div class="container site-header__bar">
+            <a class="brand" href="/" aria-label="ABC Construction — home">
+                <span class="brand__mark" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" aria-hidden="true">
+                        <path d="M3 21h18" />
+                        <path d="M5 21V9l7-5 7 5v12" />
+                        <path d="M10 21v-6h4v6" />
+                    </svg>
+                </span>
+                <span class="brand__name">ABC<span>Construction</span></span>
+            </a>
+
+            <nav class="nav" aria-label="Main">
+                <ul class="nav__list">
+                    <li><a class="nav__link" href="/" aria-current="@NavState("Home")">Home</a></li>
+                    <li><a class="nav__link" href="/projects" aria-current="@NavState("Projects")">Projects</a></li>
+                    <li><a class="nav__link" href="/employees" aria-current="@NavState("Employees")">Team</a></li>
+                    <li><a class="nav__link" href="/contact" aria-current="@NavState("Contact")">Contact</a></li>
+                    <li class="nav__cta"><a class="btn btn--primary btn--sm" href="/contact">Request a quote</a></li>
+                </ul>
+            </nav>
+
+            <button class="nav-toggle"
+                    type="button"
+                    aria-expanded="false"
+                    aria-controls="mobile-nav"
+                    aria-label="Open menu"
+                    data-nav-toggle>
+                <span class="nav-toggle__bars" aria-hidden="true"></span>
+            </button>
+        </div>
+
+        <nav class="mobile-nav" id="mobile-nav" data-open="false" aria-label="Main (mobile)">
+            <ul class="mobile-nav__list">
+                <li><a class="mobile-nav__link" href="/" aria-current="@NavState("Home")">Home</a></li>
+                <li><a class="mobile-nav__link" href="/projects" aria-current="@NavState("Projects")">Projects</a></li>
+                <li><a class="mobile-nav__link" href="/employees" aria-current="@NavState("Employees")">Team</a></li>
+                <li><a class="mobile-nav__link" href="/contact" aria-current="@NavState("Contact")">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="main">
+        @RenderBody()
+    </main>
+
+    <div class="hazard" role="presentation"></div>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="site-footer__grid">
+                <div class="site-footer__brand">
+                    <span class="brand">
+                        <span class="brand__mark" aria-hidden="true">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" aria-hidden="true">
+                                <path d="M3 21h18" />
+                                <path d="M5 21V9l7-5 7 5v12" />
+                                <path d="M10 21v-6h4v6" />
+                            </svg>
+                        </span>
+                        <span class="brand__name">ABC<span>Construction</span></span>
+                    </span>
+                    <p class="prose">Commercial, residential and industrial building contractors. Planned properly, built to last.</p>
+                </div>
+
+                <div>
+                    <h2>Site</h2>
+                    <ul class="site-footer__links">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/projects">Projects</a></li>
+                        <li><a href="/employees">Team</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h2>Get in touch</h2>
+                    <ul class="site-footer__links">
+                        <li><a href="/contact">Request a quote</a></li>
+                        <li><a href="/admin">Staff login</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="site-footer__bottom">
+                <span>&copy; @DateTime.UtcNow.Year ABC Construction. All rights reserved.</span>
+                <span>Built for durability.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/js/site.js" asp-append-version="true" defer></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,94 @@
+@model CreateUserViewModel
+@{
+    ViewData["Title"] = "Add administrator";
+    Layout = "_AdminLayout";
+}
+
+<div class="admin-head">
+    <div>
+        <h1>Add administrator</h1>
+        <p>Creates an account that can sign in to this panel.</p>
+    </div>
+    <div class="admin-head__actions">
+        <a class="btn btn--secondary" href="/admin/users">Back to list</a>
+    </div>
+</div>
+
+<section class="panel">
+    <div class="panel__body">
+        <form method="post" action="/admin/users/create" asp-antiforgery="false" data-submit-guard>
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="ModelOnly" class="alert alert--error" role="alert"></div>
+
+            <div class="form-grid form-grid--2">
+                <div class="field">
+                    <label asp-for="Email">
+                        Email address <span class="req" aria-hidden="true">*</span>
+                        <span class="visually-hidden">(required)</span>
+                    </label>
+                    <input asp-for="Email" type="email" inputmode="email" autocomplete="off" required />
+                    <span class="field__help">Used to sign in. Must be unique.</span>
+                    <span class="field__error" asp-validation-for="Email"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="DisplayName">Display name</label>
+                    <input asp-for="DisplayName" type="text" autocomplete="off" />
+                    <span class="field__help">Optional. Shown in the sidebar instead of the email address.</span>
+                    <span class="field__error" asp-validation-for="DisplayName"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="Password">
+                        Password <span class="req" aria-hidden="true">*</span>
+                        <span class="visually-hidden">(required)</span>
+                    </label>
+                    @* new-password stops browsers offering the current admin's saved credentials *@
+                    <input asp-for="Password" type="password" autocomplete="new-password" required />
+                    <span class="field__help">
+                        At least 10 characters, with an uppercase letter, a lowercase letter,
+                        a number and a symbol.
+                    </span>
+                    <span class="field__error" asp-validation-for="Password"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="ConfirmPassword">
+                        Confirm password <span class="req" aria-hidden="true">*</span>
+                        <span class="visually-hidden">(required)</span>
+                    </label>
+                    <input asp-for="ConfirmPassword" type="password" autocomplete="new-password" required />
+                    <span class="field__error" asp-validation-for="ConfirmPassword"></span>
+                </div>
+
+                <fieldset class="field field--full" style="border:0; padding:0; margin:0;">
+                    <legend style="font-size: var(--fs-sm); font-weight: 700; padding:0;">Roles</legend>
+
+                    @foreach (var role in ApplicationRoles.All)
+                    {
+                        <div class="checkbox-field">
+                            @* "checked" or null — Razor drops null-valued
+                               attributes, so this never renders checked="False" *@
+                            <input type="checkbox"
+                                   name="SelectedRoles"
+                                   value="@role"
+                                   id="role-@role"
+                                   checked="@(Model.SelectedRoles.Contains(role) ? "checked" : null)" />
+                            <label for="role-@role">@role</label>
+                        </div>
+                    }
+
+                    <span class="field__help">
+                        An account with no role can sign in but cannot reach any admin page.
+                    </span>
+                </fieldset>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn btn--primary" type="submit" data-busy-text="Creating…">Create account</button>
+                <a class="btn btn--secondary" href="/admin/users">Cancel</a>
+            </div>
+        </form>
+    </div>
+</section>

@@ -1,0 +1,43 @@
+@{
+    ViewData["Title"] = "Access denied";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Access denied — ABC Construction admin</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href="~/images/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+</head>
+<body>
+    <main class="login-page">
+        <div>
+            <div class="login-card">
+                <div class="login-card__head">
+                    <h1>Access denied</h1>
+                    <p>Your account does not have permission to view that page.</p>
+                </div>
+
+                <div class="login-card__body">
+                    <p style="color: var(--text-secondary); margin: 0;">
+                        Administrator access is required. If you believe this is a
+                        mistake, ask an existing administrator to check your role.
+                    </p>
+
+                    <a class="btn btn--secondary btn--block" href="/admin/dashboard">Back to dashboard</a>
+                </div>
+            </div>
+
+            <a class="login-back" href="/">&larr; Back to the public site</a>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,110 @@
+@model EmployeeFormViewModel
+@{
+    ViewData["Title"] = Model.IsEdit ? "Edit employee" : "Add employee";
+    Layout = "_AdminLayout";
+
+    var formAction = Model.IsEdit ? $"/admin/employees/edit/{Model.Id}" : "/admin/employees/create";
+}
+
+<div class="admin-head">
+    <div>
+        <h1>@(Model.IsEdit ? "Edit employee" : "Add employee")</h1>
+        <p>Shown on the public team page at /employees.</p>
+    </div>
+    <div class="admin-head__actions">
+        <a class="btn btn--secondary" href="/admin/employees">Back to list</a>
+    </div>
+</div>
+
+<section class="panel">
+    <div class="panel__body">
+        <form method="post" action="@formAction" enctype="multipart/form-data"
+              asp-antiforgery="false" data-submit-guard>
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="ModelOnly" class="alert alert--error" role="alert"></div>
+
+            <input type="hidden" asp-for="ExistingImageUrl" />
+
+            <div class="form-grid form-grid--2">
+                <div class="field">
+                    <label asp-for="FullName">
+                        Full name <span class="req" aria-hidden="true">*</span>
+                        <span class="visually-hidden">(required)</span>
+                    </label>
+                    <input asp-for="FullName" type="text" autocomplete="name" required />
+                    <span class="field__error" asp-validation-for="FullName"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="Position">
+                        Position <span class="req" aria-hidden="true">*</span>
+                        <span class="visually-hidden">(required)</span>
+                    </label>
+                    <input asp-for="Position" type="text" list="position-options" required />
+                    <datalist id="position-options">
+                        <option value="Project Manager"></option>
+                        <option value="Architect"></option>
+                        <option value="Engineer"></option>
+                        <option value="Site Manager"></option>
+                        <option value="Construction Worker"></option>
+                    </datalist>
+                    <span class="field__error" asp-validation-for="Position"></span>
+                </div>
+
+                <div class="field field--full">
+                    <label asp-for="Biography">Biography</label>
+                    <textarea asp-for="Biography" rows="6"></textarea>
+                    <span class="field__help">Optional. A short paragraph about their role and experience.</span>
+                    <span class="field__error" asp-validation-for="Biography"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="SortOrder">Display order</label>
+                    <input asp-for="SortOrder" type="number" min="0" max="9999" inputmode="numeric" />
+                    <span class="field__help">Lower numbers appear first. Ties are sorted by name.</span>
+                    <span class="field__error" asp-validation-for="SortOrder"></span>
+                </div>
+
+                <div class="field upload-field">
+                    <label asp-for="Portrait">Portrait</label>
+                    <input asp-for="Portrait"
+                           type="file"
+                           accept=".jpg,.jpeg,.png,.webp"
+                           data-preview-target="#portrait-preview" />
+                    <span class="field__help">
+                        JPG, PNG or WEBP, up to 5 MB. Square images work best.
+                        Without one, the team page shows their initials.
+                    </span>
+                    <span class="field__error" asp-validation-for="Portrait"></span>
+
+                    @* Explicit branches — see AdminProjects/Form.cshtml *@
+                    @if (!string.IsNullOrWhiteSpace(Model.ExistingImageUrl))
+                    {
+                        <img id="portrait-preview" class="upload-preview"
+                             src="@Model.ExistingImageUrl" alt="Current portrait" />
+                    }
+                    else
+                    {
+                        <img id="portrait-preview" class="upload-preview" alt="Selected portrait" hidden />
+                    }
+                </div>
+
+                <div class="field field--full">
+                    <div class="checkbox-field">
+                        <input asp-for="IsActive" type="checkbox" />
+                        <label asp-for="IsActive">Visible on the public site</label>
+                    </div>
+                    <span class="field__help">Uncheck to hide former staff without deleting their record.</span>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn btn--primary" type="submit" data-busy-text="Saving…">
+                    @(Model.IsEdit ? "Save changes" : "Add employee")
+                </button>
+                <a class="btn btn--secondary" href="/admin/employees">Cancel</a>
+            </div>
+        </form>
+    </div>
+</section>

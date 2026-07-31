@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="No project image available">
+  <rect width="800" height="600" fill="#E9E9E5"/>
+  <g stroke="#D6D6D2" stroke-width="2">
+    <path d="M0 100h800M0 200h800M0 300h800M0 400h800M0 500h800"/>
+    <path d="M100 0v600M200 0v600M300 0v600M400 0v600M500 0v600M600 0v600M700 0v600"/>
+  </g>
+  <g transform="translate(400 285)">
+    <g fill="none" stroke="#8C8C89" stroke-width="14" stroke-linecap="square" transform="translate(-60 -60)">
+      <path d="M6 108h108"/>
+      <path d="M18 108V42L60 12l42 30v66"/>
+      <path d="M45 108V75h30v33"/>
+    </g>
+  </g>
+  <rect x="316" y="384" width="168" height="10" fill="#FFC400"/>
+</svg>

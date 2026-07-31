@@ -1,0 +1,88 @@
+@model List<AdminEmployeeRowViewModel>
+@{
+    ViewData["Title"] = "Employees";
+    Layout = "_AdminLayout";
+}
+
+<div class="admin-head">
+    <div>
+        <h1>Employees</h1>
+        <p>The team shown on /employees, ordered by display order.</p>
+    </div>
+    <div class="admin-head__actions">
+        <a class="btn btn--primary" href="/admin/employees/create">Add employee</a>
+    </div>
+</div>
+
+<section class="panel">
+    @if (Model.Count > 0)
+    {
+        <div class="table-wrap">
+            <table class="data-table">
+                <caption class="visually-hidden">All employees</caption>
+                <thead>
+                    <tr>
+                        <th scope="col"><span class="visually-hidden">Portrait</span></th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Position</th>
+                        <th scope="col">Order</th>
+                        <th scope="col">Status</th>
+                        <th scope="col"><span class="visually-hidden">Actions</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var person in Model)
+                    {
+                        <tr>
+                            <td>
+                                <img class="data-table__thumb"
+                                     src="@person.DisplayImageUrl"
+                                     alt=""
+                                     width="56" height="40"
+                                     loading="lazy" />
+                            </td>
+                            <td>@person.FullName</td>
+                            <td>@person.Position</td>
+                            <td class="num">@person.SortOrder</td>
+                            <td>
+                                @if (person.IsActive)
+                                {
+                                    <span class="badge badge--live">Live</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge--hidden">Hidden</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="row-actions">
+                                    <a class="btn btn--secondary btn--sm" href="/admin/employees/edit/@person.Id">
+                                        Edit<span class="visually-hidden"> @person.FullName</span>
+                                    </a>
+
+                                    <form method="post"
+                                          action="/admin/employees/delete/@person.Id"
+                                          asp-antiforgery="false"
+                                          data-confirm="Remove @person.FullName from the team? This cannot be undone.">
+                                        @Html.AntiForgeryToken()
+                                        <button class="btn btn--danger btn--sm" type="submit">
+                                            Delete<span class="visually-hidden"> @person.FullName</span>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="admin-empty">
+            <h2>No employees yet</h2>
+            <p>Add your team and they will appear on the public team page.</p>
+            <a class="btn btn--primary" href="/admin/employees/create">Add an employee</a>
+        </div>
+    }
+</section>

@@ -1,0 +1,112 @@
+@model AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "_AdminLayout";
+}
+
+<div class="admin-head">
+    <div>
+        <h1>Dashboard</h1>
+        <p>Overview of what is published on the public site.</p>
+    </div>
+    <div class="admin-head__actions">
+        <a class="btn btn--primary" href="/admin/projects/create">New project</a>
+    </div>
+</div>
+
+@if (Model.ContactDetailsIncomplete)
+{
+    @* Setup prompt while the seeded "unwritten" placeholders are still live *@
+    <div class="alert alert--info" role="status">
+        <svg class="alert__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" /><path d="M12 8v5M12 16h.01" />
+        </svg>
+        <span class="alert__body">
+            <strong>Contact details are not published yet</strong>
+            The contact page is still showing placeholders. Add your email,
+            phone number and address in
+            <a href="/admin/settings">company settings</a>.
+        </span>
+    </div>
+}
+
+<div class="stat-grid">
+    <div class="stat-tile">
+        <p class="stat-tile__label">Projects live</p>
+        <p class="stat-tile__value">@Model.ActiveProjects</p>
+        <p class="stat-tile__note">@Model.HiddenProjects hidden</p>
+    </div>
+
+    <div class="stat-tile">
+        <p class="stat-tile__label">Projects total</p>
+        <p class="stat-tile__value">@Model.TotalProjects</p>
+        <p class="stat-tile__note">Including hidden</p>
+    </div>
+
+    <div class="stat-tile">
+        <p class="stat-tile__label">Team live</p>
+        <p class="stat-tile__value">@Model.ActiveEmployees</p>
+        <p class="stat-tile__note">@(Model.TotalEmployees - Model.ActiveEmployees) hidden</p>
+    </div>
+
+    <div class="stat-tile">
+        <p class="stat-tile__label">Team total</p>
+        <p class="stat-tile__value">@Model.TotalEmployees</p>
+        <p class="stat-tile__note">Including hidden</p>
+    </div>
+</div>
+
+<section class="panel">
+    <div class="panel__head">
+        <h2>Recently updated projects</h2>
+        <a class="btn btn--secondary btn--sm" href="/admin/projects">Manage all</a>
+    </div>
+
+    @if (Model.RecentProjects.Count > 0)
+    {
+        <div class="table-wrap">
+            <table class="data-table">
+                <caption class="visually-hidden">The five most recent projects</caption>
+                <thead>
+                    <tr>
+                        <th scope="col"><span class="visually-hidden">Cover image</span></th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Completed</th>
+                        <th scope="col"><span class="visually-hidden">Actions</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var project in Model.RecentProjects)
+                    {
+                        <tr>
+                            <td>
+                                <img class="data-table__thumb"
+                                     src="@project.DisplayImageUrl"
+                                     alt=""
+                                     width="56" height="40"
+                                     loading="lazy" />
+                            </td>
+                            <td>@project.Title</td>
+                            <td>@project.Category</td>
+                            <td class="num">@project.CompletionDateDisplay</td>
+                            <td>
+                                <a class="btn btn--secondary btn--sm" href="/admin/projects/edit/@project.Id">
+                                    Edit<span class="visually-hidden"> @project.Title</span>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="admin-empty">
+            <h3>No projects yet</h3>
+            <p>Add your first project and it will appear on the public site immediately.</p>
+            <a class="btn btn--primary" href="/admin/projects/create">Create a project</a>
+        </div>
+    }
+</section>

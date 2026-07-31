@@ -1,0 +1,250 @@
+@model ProjectFormViewModel
+@{
+    ViewData["Title"] = Model.IsEdit ? "Edit project" : "New project";
+    Layout = "_AdminLayout";
+
+    var formAction = Model.IsEdit ? $"/admin/projects/edit/{Model.Id}" : "/admin/projects/create";
+}
+
+<div class="admin-head">
+    <div>
+        <h1>@(Model.IsEdit ? "Edit project" : "New project")</h1>
+        <p>
+            @(Model.IsEdit
+                ? "Changes go live as soon as you save."
+                : "Save the project first, then add gallery images.")
+        </p>
+    </div>
+    <div class="admin-head__actions">
+        @if (Model.IsEdit)
+        {
+            <a class="btn btn--secondary" href="/projects/@Model.Id" target="_blank" rel="noopener">
+                Preview<span class="visually-hidden"> (opens in a new tab)</span>
+            </a>
+        }
+        <a class="btn btn--secondary" href="/admin/projects">Back to list</a>
+    </div>
+</div>
+
+<section class="panel">
+    <div class="panel__body">
+        @* enctype required for the file inputs to post *@
+        <form method="post" action="@formAction" enctype="multipart/form-data"
+              asp-antiforgery="false" data-submit-guard>
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="ModelOnly" class="alert alert--error" role="alert"></div>
+
+            <input type="hidden" asp-for="ExistingImageUrl" />
+
+            <div class="form-grid form-grid--2">
+                <div class="field">
+                    <label asp-for="Title">
+                        Title <span class="req" aria-hidden="true">*</span>
+                        <span class="visually-hidden">(required)</span>
+                    </label>
+                    <input asp-for="Title" type="text" required />
+                    <span class="field__error" asp-validation-for="Title"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="Category">
+                        Construction category <span class="req" aria-hidden="true">*</span>
+                        <span class="visually-hidden">(required)</span>
+                    </label>
+                    <input asp-for="Category" type="text" list="category-options" required />
+                    @* Suggestions, but free text so new categories are allowed *@
+                    <datalist id="category-options">
+                        <option value="Commercial"></option>
+                        <option value="Residential"></option>
+                        <option value="Industrial"></option>
+                        <option value="Renovation"></option>
+                        <option value="Fit-out"></option>
+                    </datalist>
+                    <span class="field__help">Used as the filter on the public projects page.</span>
+                    <span class="field__error" asp-validation-for="Category"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="Duration">
+                        Duration <span class="req" aria-hidden="true">*</span>
+                        <span class="visually-hidden">(required)</span>
+                    </label>
+                    <input asp-for="Duration" type="text" placeholder="8 months" required />
+                    <span class="field__help">Free text, shown exactly as typed. For example &ldquo;8 months&rdquo;.</span>
+                    <span class="field__error" asp-validation-for="Duration"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="CompletionDate">
+                        Completion date <span class="req" aria-hidden="true">*</span>
+                        <span class="visually-hidden">(required)</span>
+                    </label>
+                    <input asp-for="CompletionDate" type="date"
+                           value="@Model.CompletionDate.ToString("yyyy-MM-dd")" required />
+                    <span class="field__error" asp-validation-for="CompletionDate"></span>
+                </div>
+
+                <div class="field field--full">
+                    <label asp-for="ShortDescription">
+                        Short description <span class="req" aria-hidden="true">*</span>
+                        <span class="visually-hidden">(required)</span>
+                    </label>
+                    <textarea asp-for="ShortDescription" rows="3" maxlength="400" required></textarea>
+                    <span class="field__help">Shown on project cards. Up to 400 characters.</span>
+                    <span class="field__error" asp-validation-for="ShortDescription"></span>
+                </div>
+
+                <div class="field field--full">
+                    <label asp-for="Description">
+                        Full description <span class="req" aria-hidden="true">*</span>
+                        <span class="visually-hidden">(required)</span>
+                    </label>
+                    <textarea asp-for="Description" rows="8" required></textarea>
+                    <span class="field__help">Shown on the project detail page. Line breaks are preserved.</span>
+                    <span class="field__error" asp-validation-for="Description"></span>
+                </div>
+
+                <div class="field field--full">
+                    <label asp-for="Timeline">Timeline</label>
+                    <textarea asp-for="Timeline" rows="5"></textarea>
+                    <span class="field__help">Optional. One milestone per line works well.</span>
+                    <span class="field__error" asp-validation-for="Timeline"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="MaterialsUsed">Materials and methods</label>
+                    <textarea asp-for="MaterialsUsed" rows="5"></textarea>
+                    <span class="field__help">Optional.</span>
+                    <span class="field__error" asp-validation-for="MaterialsUsed"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="Challenges">Challenges</label>
+                    <textarea asp-for="Challenges" rows="5"></textarea>
+                    <span class="field__help">Optional.</span>
+                    <span class="field__error" asp-validation-for="Challenges"></span>
+                </div>
+
+                <div class="field field--full upload-field">
+                    <label asp-for="CoverImage">Cover image</label>
+                    <input asp-for="CoverImage"
+                           type="file"
+                           accept=".jpg,.jpeg,.png,.webp"
+                           data-preview-target="#cover-preview" />
+                    <span class="field__help">JPG, PNG or WEBP, up to 5 MB. Leave empty to keep the current image.</span>
+                    <span class="field__error" asp-validation-for="CoverImage"></span>
+
+                    @* Two explicit branches rather than hidden="@(bool)", so the
+                       rendered markup does not depend on how Razor treats a
+                       boolean attribute value. admin.js unsets .hidden on change. *@
+                    @if (!string.IsNullOrWhiteSpace(Model.ExistingImageUrl))
+                    {
+                        <img id="cover-preview" class="upload-preview"
+                             src="@Model.ExistingImageUrl" alt="Current cover image" />
+                    }
+                    else
+                    {
+                        <img id="cover-preview" class="upload-preview" alt="Selected cover image" hidden />
+                    }
+                </div>
+
+                <div class="field field--full">
+                    <div class="checkbox-field">
+                        <input asp-for="IsActive" type="checkbox" />
+                        <label asp-for="IsActive">Visible on the public site</label>
+                    </div>
+                    <span class="field__help">Uncheck to keep the project in the admin panel but hide it from visitors.</span>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn btn--primary" type="submit" data-busy-text="Saving…">
+                    @(Model.IsEdit ? "Save changes" : "Create project")
+                </button>
+                <a class="btn btn--secondary" href="/admin/projects">Cancel</a>
+            </div>
+        </form>
+    </div>
+</section>
+
+@if (Model.IsEdit)
+{
+    <section class="panel">
+        <div class="panel__head">
+            <h2>Gallery</h2>
+            <span class="field__help">@Model.Images.Count image(s)</span>
+        </div>
+
+        <div class="panel__body">
+            @* Separate form: uploading an image must not resubmit the project *@
+            <form method="post"
+                  action="/admin/projects/@Model.Id/images"
+                  enctype="multipart/form-data"
+                  asp-antiforgery="false"
+                  class="form-grid form-grid--2">
+                @Html.AntiForgeryToken()
+
+                <div class="field upload-field">
+                    <label asp-for="GalleryImage">Add gallery image</label>
+                    <input asp-for="GalleryImage"
+                           type="file"
+                           accept=".jpg,.jpeg,.png,.webp"
+                           data-preview-target="#gallery-preview" />
+                    <span class="field__help">JPG, PNG or WEBP, up to 5 MB.</span>
+                    <img id="gallery-preview" class="upload-preview" alt="Selected gallery image" hidden />
+                </div>
+
+                <div class="field">
+                    <label asp-for="GalleryCaption">Caption</label>
+                    <input asp-for="GalleryCaption" type="text" />
+                    <span class="field__help">
+                        Optional. Also used as the image's alt text; falls back to the project title.
+                    </span>
+
+                    <button class="btn btn--secondary" type="submit" style="margin-top: var(--sp-3);">
+                        Add to gallery
+                    </button>
+                </div>
+            </form>
+
+            @if (Model.Images.Count > 0)
+            {
+                <div class="gallery-admin" style="margin-top: var(--sp-5);">
+                    @foreach (var image in Model.Images)
+                    {
+                        <figure class="gallery-admin__item" style="margin:0;">
+                            <img src="@image.ImageUrl"
+                                 alt="@(string.IsNullOrWhiteSpace(image.Caption) ? Model.Title : image.Caption)"
+                                 width="320" height="213"
+                                 loading="lazy" />
+                            <div class="gallery-admin__bar">
+                                @if (!string.IsNullOrWhiteSpace(image.Caption))
+                                {
+                                    <figcaption class="field__help" style="margin-bottom: var(--sp-2);">
+                                        @image.Caption
+                                    </figcaption>
+                                }
+                                <form method="post"
+                                      action="/admin/projects/@Model.Id/images/@image.Id/delete"
+                                      asp-antiforgery="false"
+                                      data-confirm="Remove this gallery image? This cannot be undone.">
+                                    @Html.AntiForgeryToken()
+                                    <button class="btn btn--danger btn--sm btn--block" type="submit">
+                                        Remove<span class="visually-hidden"> gallery image</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </figure>
+                    }
+                </div>
+            }
+            else
+            {
+                <p class="field__help" style="margin-top: var(--sp-4);">
+                    No gallery images yet. The cover image is used on its own until you add some.
+                </p>
+            }
+        </div>
+    </section>
+}

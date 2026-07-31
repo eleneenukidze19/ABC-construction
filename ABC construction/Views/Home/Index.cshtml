@@ -1,0 +1,147 @@
+@model HomeViewModel
+@{
+    ViewData["Title"] = null; // Home uses the bare brand name as its title
+    ViewData["Description"] = "ABC Construction — commercial, residential and industrial building contractors. Structural work, fit-out and renovation delivered on programme.";
+
+    // Static capability list: these are service lines, not database records, so
+    // they are not admin-managed. Move to the DB if the client needs to edit them.
+    var services = new[]
+    {
+        ("01", "Commercial build", "Ground-up commercial structures, from groundworks through to handover."),
+        ("02", "Renovation", "Structural upgrades and full refurbishment of occupied and vacant properties."),
+        ("03", "Industrial", "Warehousing, plant facilities and heavy-duty floor and frame systems."),
+        ("04", "Fit-out", "Interior fit-out and services coordination finished to specification.")
+    };
+}
+
+<section class="hero">
+    <div class="container hero__inner">
+        <div>
+            <p class="eyebrow">Established contractors</p>
+
+            <h1 class="hero__title">
+                We build<br />
+                <em>structures that hold.</em>
+            </h1>
+
+            <p class="hero__lead">
+                ABC Construction delivers commercial, residential and industrial
+                projects across the region. Planned properly, priced honestly,
+                and handed over on programme.
+            </p>
+
+            <div class="hero__actions">
+                <a class="btn btn--primary" href="/projects">
+                    View our projects
+                    <span class="btn__arrow" aria-hidden="true">&rarr;</span>
+                </a>
+                <a class="btn btn--secondary" href="/contact">Request a quote</a>
+            </div>
+        </div>
+
+        @* Stat rail. Values are real counts from the database, so an empty
+           install shows honest zeros rather than invented numbers.
+           dt precedes dd as the spec requires; .stat reverses them visually so
+           the numeral reads first while screen readers still hear label-then-value. *@
+        <dl class="hero__stats">
+            <div class="stat">
+                <dt class="stat__label">Projects delivered</dt>
+                <dd class="stat__value tnum">@Model.CompletedProjectsCount</dd>
+            </div>
+            <div class="stat">
+                <dt class="stat__label">People on the team</dt>
+                <dd class="stat__value tnum">@Model.TeamSize</dd>
+            </div>
+            <div class="stat">
+                <dt class="stat__label">Years in business</dt>
+                <dd class="stat__value tnum">@Model.YearsInBusiness</dd>
+            </div>
+        </dl>
+    </div>
+</section>
+
+<div class="hazard" role="presentation"></div>
+
+<section class="section">
+    <div class="container">
+        <div class="section-head">
+            <div class="section-head__text">
+                <p class="eyebrow">Who we are</p>
+                <h2>A contractor that turns up and finishes</h2>
+                <p>
+                    We are a directly-employed building contractor. That means the
+                    people who price your job are the people who run it, and the
+                    trades on site are ours — not a chain of subcontractors you
+                    never meet.
+                </p>
+            </div>
+            <a class="btn btn--secondary" href="/employees">Meet the team</a>
+        </div>
+
+        <div class="service-grid">
+            @foreach (var (number, title, description) in services)
+            {
+                <article class="service">
+                    <span class="service__num">@number</span>
+                    <h3 class="service__title">@title</h3>
+                    <p class="service__desc">@description</p>
+                </article>
+            }
+        </div>
+    </div>
+</section>
+
+<section class="section section--sunken">
+    <div class="container">
+        <div class="section-head">
+            <div class="section-head__text">
+                <p class="eyebrow">Selected work</p>
+                <h2>Recent projects</h2>
+                <p>A sample of what we have handed over most recently.</p>
+            </div>
+            <a class="btn btn--secondary" href="/projects">
+                All projects
+                <span class="btn__arrow" aria-hidden="true">&rarr;</span>
+            </a>
+        </div>
+
+        @if (Model.FeaturedProjects.Count > 0)
+        {
+            <div class="card-grid">
+                @foreach (var project in Model.FeaturedProjects)
+                {
+                    <partial name="_ProjectCard" model="project" />
+                }
+            </div>
+        }
+        else
+        {
+            @* Honest empty state on a fresh install — no fake placeholder work *@
+            <div class="empty-state">
+                <h3>No projects published yet</h3>
+                <p>
+                    Once projects are added through the admin panel they will
+                    appear here automatically.
+                </p>
+            </div>
+        }
+    </div>
+</section>
+
+<section class="cta-band">
+    <div class="container cta-band__inner">
+        <div>
+            <h2>Got a project to price?</h2>
+            <p>
+                Send us the drawings, or just tell us roughly what you need. We
+                will tell you honestly whether we are the right contractor for it.
+            </p>
+        </div>
+        <div class="hero__actions">
+            <a class="btn btn--primary" href="/contact">
+                Get in touch
+                <span class="btn__arrow" aria-hidden="true">&rarr;</span>
+            </a>
+        </div>
+    </div>
+</section>

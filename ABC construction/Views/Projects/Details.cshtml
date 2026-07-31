@@ -1,0 +1,124 @@
+@model ProjectDetailViewModel
+@{
+    ViewData["Title"] = Model.Title;
+    ViewData["Description"] = Model.ShortDescription;
+}
+
+<section class="detail-hero">
+    <div class="container">
+        <nav aria-label="Breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="/">Home</a></li>
+                <li><a href="/projects">Projects</a></li>
+                <li aria-current="page">@Model.Title</li>
+            </ol>
+        </nav>
+
+        <span class="detail-hero__tag">@Model.Category</span>
+        <h1>@Model.Title</h1>
+        <p class="hero__lead" style="margin-bottom:0;">@Model.ShortDescription</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container detail-layout">
+        <div>
+            <div class="detail-block">
+                <h2>About this project</h2>
+                @* pre-line preserves the admin's paragraph breaks; the value is
+                   still HTML-encoded by Razor, so no markup can be injected. *@
+                <div class="detail-block__text">@Model.Description</div>
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(Model.Timeline))
+            {
+                <div class="detail-block">
+                    <h2>Timeline</h2>
+                    <div class="detail-block__text">@Model.Timeline</div>
+                </div>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(Model.MaterialsUsed))
+            {
+                <div class="detail-block">
+                    <h2>Materials &amp; methods</h2>
+                    <div class="detail-block__text">@Model.MaterialsUsed</div>
+                </div>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(Model.Challenges))
+            {
+                <div class="detail-block">
+                    <h2>Challenges</h2>
+                    <div class="detail-block__text">@Model.Challenges</div>
+                </div>
+            }
+
+            @if (Model.HasGallery)
+            {
+                <div class="detail-block">
+                    <h2>Gallery</h2>
+                    <div class="gallery" data-gallery>
+                        @foreach (var image in Model.Images)
+                        {
+                            var caption = string.IsNullOrWhiteSpace(image.Caption)
+                                ? Model.Title
+                                : image.Caption;
+
+                            <figure>
+                                @* Button wrapper only matters when JS is present;
+                                   without it the image still renders normally. *@
+                                <button type="button"
+                                        data-lightbox="@image.ImageUrl"
+                                        data-lightbox-alt="@caption"
+                                        aria-label="View larger image: @caption">
+                                    <img src="@image.ImageUrl"
+                                         alt="@caption"
+                                         width="600" height="400"
+                                         loading="lazy" decoding="async" />
+                                </button>
+                                @if (!string.IsNullOrWhiteSpace(image.Caption))
+                                {
+                                    <figcaption>@image.Caption</figcaption>
+                                }
+                            </figure>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+
+        <aside class="spec-panel" aria-labelledby="project-facts">
+            <h2 id="project-facts">Project facts</h2>
+
+            <dl class="spec-list">
+                <div>
+                    <dt>Category</dt>
+                    <dd>@Model.Category</dd>
+                </div>
+                <div>
+                    <dt>Duration</dt>
+                    <dd>@Model.Duration</dd>
+                </div>
+                <div>
+                    <dt>Completed</dt>
+                    <dd>
+                        <time datetime="@Model.CompletionDate.ToString("yyyy-MM-dd")">
+                            @Model.CompletionDateDisplay
+                        </time>
+                    </dd>
+                </div>
+            </dl>
+
+            <a class="btn btn--primary btn--block" href="/contact" style="margin-top: var(--sp-5);">
+                Discuss a similar job
+            </a>
+        </aside>
+    </div>
+</section>
+
+<section class="section section--tight section--sunken">
+    <div class="container">
+        <a class="btn btn--secondary" href="/projects">&larr; Back to all projects</a>
+    </div>
+</section>

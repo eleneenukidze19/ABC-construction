@@ -1,0 +1,78 @@
+@model EmployeeListViewModel
+@{
+    ViewData["Title"] = "Team";
+    ViewData["Description"] = "The people who run ABC Construction projects — project managers, architects, engineers and site trades.";
+}
+
+<section class="detail-hero">
+    <div class="container">
+        <p class="eyebrow">The people</p>
+        <h1>Our team</h1>
+        <p class="hero__lead" style="margin-bottom:0;">
+            Directly employed, not subcontracted. These are the people who will
+            price your job and the people who will run it.
+        </p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        @if (Model.Employees.Count > 0)
+        {
+            <div class="team-grid">
+                @foreach (var person in Model.Employees)
+                {
+                    <article class="person">
+                        <div class="person__media">
+                            @if (!string.IsNullOrWhiteSpace(person.ImageUrl))
+                            {
+                                <img src="@person.ImageUrl"
+                                     alt="@person.FullName, @person.Position"
+                                     width="400" height="400"
+                                     loading="lazy" decoding="async" />
+                            }
+                            else
+                            {
+                                @* Initials rather than a stock silhouette — keeps
+                                   the grid even and does not imply a real photo. *@
+                                <span class="person__initials" aria-hidden="true">@person.Initials</span>
+                            }
+                        </div>
+
+                        <div class="person__body">
+                            <h2 class="person__name">@person.FullName</h2>
+                            <p class="person__role">@person.Position</p>
+
+                            @if (!string.IsNullOrWhiteSpace(person.Biography))
+                            {
+                                <p class="person__bio">@person.Biography</p>
+                            }
+                        </div>
+                    </article>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+                <h2>No team members published yet</h2>
+                <p>Staff added through the admin panel will appear here.</p>
+            </div>
+        }
+    </div>
+</section>
+
+<section class="cta-band">
+    <div class="container cta-band__inner">
+        <div>
+            <h2>Want to work with us?</h2>
+            <p>We take on skilled trades and site staff regularly. Get in touch and tell us what you do.</p>
+        </div>
+        <div class="hero__actions">
+            <a class="btn btn--primary" href="/contact">
+                Contact us
+                <span class="btn__arrow" aria-hidden="true">&rarr;</span>
+            </a>
+        </div>
+    </div>
+</section>

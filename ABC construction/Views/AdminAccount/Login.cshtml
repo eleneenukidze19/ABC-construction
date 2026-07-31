@@ -1,0 +1,101 @@
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Sign in";
+    // Standalone page: no admin chrome until the user is authenticated.
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sign in — ABC Construction admin</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href="~/images/favicon.svg" type="image/svg+xml" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&display=swap" />
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+</head>
+<body>
+    <main class="login-page">
+        <div>
+            <div class="login-card">
+                <div class="login-card__head">
+                    <h1>Staff sign in</h1>
+                    <p>Administration panel for ABC Construction.</p>
+                </div>
+
+                <div class="login-card__body">
+                    @* role="alert" so screen readers announce a failed attempt *@
+                    @if (!ViewData.ModelState.IsValid && ViewData.ModelState[string.Empty]?.Errors.Count > 0)
+                    {
+                        <div class="alert alert--error" role="alert">
+                            <svg class="alert__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                                <circle cx="12" cy="12" r="10" /><path d="M12 7v6M12 16h.01" />
+                            </svg>
+                            <span class="alert__body">
+                                @foreach (var error in ViewData.ModelState[string.Empty]!.Errors)
+                                {
+                                    <span>@error.ErrorMessage</span>
+                                }
+                            </span>
+                        </div>
+                    }
+
+                    @* Explicit token — see Views/Admin/Settings.cshtml for why *@
+                    <form method="post" action="/admin/login" asp-antiforgery="false">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="ReturnUrl" />
+
+                        <div class="form-grid">
+                            <div class="field">
+                                <label asp-for="Email">
+                                    Email address
+                                    <span class="req" aria-hidden="true">*</span>
+                                    <span class="visually-hidden">(required)</span>
+                                </label>
+                                @* autocomplete lets password managers fill correctly *@
+                                <input asp-for="Email"
+                                       type="email"
+                                       autocomplete="username"
+                                       inputmode="email"
+                                       required />
+                                <span class="field__error" asp-validation-for="Email"></span>
+                            </div>
+
+                            <div class="field">
+                                <label asp-for="Password">
+                                    Password
+                                    <span class="req" aria-hidden="true">*</span>
+                                    <span class="visually-hidden">(required)</span>
+                                </label>
+                                <input asp-for="Password"
+                                       type="password"
+                                       autocomplete="current-password"
+                                       required />
+                                <span class="field__error" asp-validation-for="Password"></span>
+                            </div>
+
+                            <div class="checkbox-field">
+                                <input asp-for="RememberMe" type="checkbox" />
+                                <label asp-for="RememberMe">Keep me signed in</label>
+                            </div>
+                        </div>
+
+                        <button class="btn btn--primary btn--block" type="submit" style="margin-top: var(--sp-5);">
+                            Sign in
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <a class="login-back" href="/">&larr; Back to the public site</a>
+        </div>
+    </main>
+</body>
+</html>

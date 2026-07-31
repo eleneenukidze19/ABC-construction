@@ -11,6 +11,11 @@ namespace ABC_construction.Interfaces;
 /// administrator must not be able to lock themselves out, and the site must
 /// never be left without a working administrator.
 /// </para>
+/// <para>
+/// The account named by AdminSeed:Email is additionally protected — it cannot
+/// be deleted, cannot lose the Admin role, and its email cannot be changed, so
+/// there is always one known account that can still sign in and manage the site.
+/// </para>
 /// </summary>
 public interface IUserAdminService
 {

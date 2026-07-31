@@ -42,7 +42,8 @@ public class AdminUsersController : Controller
                 Roles = u.Roles,
                 CreatedDate = u.CreatedDate,
                 IsLockedOut = u.IsLockedOut,
-                IsCurrentUser = u.Id == CurrentUserId
+                IsCurrentUser = u.Id == CurrentUserId,
+                IsProtected = u.IsProtected
             }).ToList()
         };
 
@@ -103,7 +104,8 @@ public class AdminUsersController : Controller
             IsCurrentUser = user.Id == CurrentUserId,
             IsLockedOut = user.IsLockedOut,
             LockoutEnd = user.LockoutEnd,
-            IsOnlyAdministrator = adminCount <= 1 && user.Roles.Contains(ApplicationRoles.Admin)
+            IsOnlyAdministrator = adminCount <= 1 && user.Roles.Contains(ApplicationRoles.Admin),
+            IsProtected = user.IsProtected
         });
     }
 
@@ -198,6 +200,7 @@ public class AdminUsersController : Controller
         model.LockoutEnd = user?.LockoutEnd;
         model.IsOnlyAdministrator =
             adminCount <= 1 && (user?.Roles.Contains(ApplicationRoles.Admin) ?? false);
+        model.IsProtected = user?.IsProtected ?? false;
     }
 
     private void AddErrors(UserOperationResult result)

@@ -13,6 +13,12 @@ public class AdminUserDto
     public bool IsLockedOut { get; set; }
 
     public DateTimeOffset? LockoutEnd { get; set; }
+
+    /// <summary>
+    /// True for the primary administrator (AdminSeed:Email), which cannot be
+    /// deleted, demoted, or renamed.
+    /// </summary>
+    public bool IsProtected { get; set; }
 }
 
 public class CreateUserRequest

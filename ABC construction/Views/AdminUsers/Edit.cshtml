@@ -33,6 +33,21 @@
     </div>
 }
 
+@if (Model.IsProtected)
+{
+    <div class="alert alert--info" role="status">
+        <svg class="alert__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z" />
+        </svg>
+        <span class="alert__body">
+            <strong>Primary administrator</strong>
+            This account cannot be deleted, cannot lose the Admin role, and its
+            email address cannot be changed &mdash; the email is what marks it as
+            protected. The display name and password can still be edited.
+        </span>
+    </div>
+}
+
 @if (Model.IsOnlyAdministrator)
 {
     <div class="alert alert--info" role="status">
@@ -60,8 +75,15 @@
                         Email address <span class="req" aria-hidden="true">*</span>
                         <span class="visually-hidden">(required)</span>
                     </label>
-                    <input asp-for="Email" type="email" inputmode="email" autocomplete="off" required />
-                    <span class="field__help">Changing this also changes the sign-in username.</span>
+                    @* readonly rather than disabled: a disabled input posts
+                       nothing, which the service would read as a blank email *@
+                    <input asp-for="Email" type="email" inputmode="email" autocomplete="off" required
+                           readonly="@(Model.IsProtected ? "readonly" : null)" />
+                    <span class="field__help">
+                        @(Model.IsProtected
+                            ? "Fixed for the primary administrator account."
+                            : "Changing this also changes the sign-in username.")
+                    </span>
                     <span class="field__error" asp-validation-for="Email"></span>
                 </div>
 
@@ -79,10 +101,12 @@
                         var isAdminRole = role == ApplicationRoles.Admin;
                         var isHeld = Model.SelectedRoles.Contains(role);
 
-                        // Locked when removing it would strand the site or the
-                        // signed-in admin. The service rejects it regardless;
-                        // this stops the attempt earlier and explains why.
-                        var isLocked = isAdminRole && isHeld && (Model.IsOnlyAdministrator || Model.IsCurrentUser);
+                        // Locked when removing it would strand the site, the
+                        // signed-in admin, or the protected account. The service
+                        // rejects it regardless; this stops the attempt earlier
+                        // and explains why.
+                        var isLocked = isAdminRole && isHeld
+                            && (Model.IsProtected || Model.IsOnlyAdministrator || Model.IsCurrentUser);
 
                         <div class="checkbox-field">
                             <input type="checkbox"
@@ -95,10 +119,21 @@
                                 @role
                                 @if (isLocked)
                                 {
+                                    @* Same precedence as the service, so the reason
+                                       shown is the one that would actually fire *@
                                     <span class="field__help" style="display:block; font-weight:500;">
-                                        @(Model.IsCurrentUser
-                                            ? "You cannot remove your own administrator role."
-                                            : "Cannot be removed from the last administrator.")
+                                        @if (Model.IsProtected)
+                                        {
+                                            <text>The primary administrator must keep this role.</text>
+                                        }
+                                        else if (Model.IsCurrentUser)
+                                        {
+                                            <text>You cannot remove your own administrator role.</text>
+                                        }
+                                        else
+                                        {
+                                            <text>Cannot be removed from the last administrator.</text>
+                                        }
                                     </span>
                                 }
                             </label>

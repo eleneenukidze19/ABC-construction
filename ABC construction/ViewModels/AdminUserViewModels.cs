@@ -15,6 +15,9 @@ public class AdminUserRowViewModel
     /// <summary>Marks the signed-in account so the UI can label it and hide self-destructive actions.</summary>
     public bool IsCurrentUser { get; set; }
 
+    /// <summary>Primary administrator: the view hides its delete button.</summary>
+    public bool IsProtected { get; set; }
+
     public string DisplayNameOrEmail =>
         string.IsNullOrWhiteSpace(DisplayName) ? Email : DisplayName;
 
@@ -102,4 +105,10 @@ public class EditUserViewModel
     /// disable the Admin checkbox and explain why.
     /// </summary>
     public bool IsOnlyAdministrator { get; set; }
+
+    /// <summary>
+    /// Primary administrator: the view makes the email field read-only and locks
+    /// the Admin checkbox, since the service refuses to change either.
+    /// </summary>
+    public bool IsProtected { get; set; }
 }

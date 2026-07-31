@@ -1,8 +1,10 @@
+using ABC_construction.Configuration;
 using ABC_construction.DTOs;
 using ABC_construction.Interfaces;
 using ABC_construction.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace ABC_construction.Services;
 
@@ -10,13 +12,16 @@ namespace ABC_construction.Services;
 public class UserAdminService : IUserAdminService
 {
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly string _protectedEmail;
     private readonly ILogger<UserAdminService> _logger;
 
     public UserAdminService(
         UserManager<ApplicationUser> userManager,
+        IOptions<AdminSeedOptions> adminSeedOptions,
         ILogger<UserAdminService> logger)
     {
         _userManager = userManager;
+        _protectedEmail = adminSeedOptions.Value.Email.Trim();
         _logger = logger;
     }
 
@@ -106,6 +111,15 @@ public class UserAdminService : IUserAdminService
 
         var email = request.Email.Trim();
 
+        // Renaming the protected account would un-protect it, so this is refused
+        // even though every other field on it stays editable.
+        if (IsProtected(user) && !string.Equals(email, user.Email, StringComparison.OrdinalIgnoreCase))
+        {
+            return UserOperationResult.Failure(
+                "The primary administrator's email address cannot be changed. " +
+                "It is what marks the account as protected.");
+        }
+
         // Identity requires unique emails; check before mutating anything.
         var existing = await _userManager.FindByEmailAsync(email);
 
@@ -122,6 +136,15 @@ public class UserAdminService : IUserAdminService
 
         if (losingAdmin)
         {
+            // Stripping the protected account's role would leave it undeletable
+            // but useless — the guarantee is a way back in, not just a row in
+            // the table. Checked first: it holds no matter who is signed in.
+            if (IsProtected(user))
+            {
+                return UserOperationResult.Failure(
+                    "The primary administrator account must keep the Admin role.");
+            }
+
             // An admin removing their own Admin role would immediately lose
             // access to this very screen.
             if (user.Id == currentUserId)
@@ -211,6 +234,12 @@ public class UserAdminService : IUserAdminService
             return UserOperationResult.Failure("That account no longer exists.");
         }
 
+        if (IsProtected(user))
+        {
+            return UserOperationResult.Failure(
+                "The primary administrator account is protected and cannot be deleted.");
+        }
+
         if (await _userManager.IsInRoleAsync(user, ApplicationRoles.Admin)
             && await CountAdministratorsAsync(cancellationToken) <= 1)
         {
@@ -273,9 +302,24 @@ public class UserAdminService : IUserAdminService
             // LockoutEnd sits in the past once a lockout has expired, so compare
             // against now rather than treating any value as "locked".
             IsLockedOut = user.LockoutEnd.HasValue && user.LockoutEnd.Value > DateTimeOffset.UtcNow,
-            LockoutEnd = user.LockoutEnd
+            LockoutEnd = user.LockoutEnd,
+            IsProtected = IsProtected(user)
         };
     }
+
+    /// <summary>
+    /// True for the account named by AdminSeed:Email — the site's permanent way
+    /// back in. It cannot be deleted or demoted, and its email cannot be changed,
+    /// because the email is what marks it: renaming it would move the protection
+    /// onto an account that does not exist and leave this one deletable.
+    /// <para>
+    /// Blank configuration protects nothing, rather than matching every account
+    /// whose email happens to be empty.
+    /// </para>
+    /// </summary>
+    private bool IsProtected(ApplicationUser user) =>
+        !string.IsNullOrWhiteSpace(_protectedEmail)
+        && string.Equals(user.Email, _protectedEmail, StringComparison.OrdinalIgnoreCase);
 
     /// <summary>
     /// Drops anything not in <see cref="ApplicationRoles.All"/>, so a tampered

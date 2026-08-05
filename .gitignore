@@ -499,3 +499,9 @@ wwwroot/images/uploads/*
 # Per-machine Claude Code settings: contains absolute paths from whoever ran
 # it. Shared project settings belong in .claude/settings.json instead.
 .claude/settings.local.json
+
+# Content and setup worksheets. These are working documents that collect the
+# values to be entered through the admin panel, and may hold the database
+# connection string or an admin password while the site is being set up.
+*.xlsx
+*.xls

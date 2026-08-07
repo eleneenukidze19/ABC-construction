@@ -391,8 +391,9 @@ hr { border: 0; border-top: var(--rule) solid var(--border-strong); margin: var(
     flex: none;
 }
 
-.brand__name { line-height: 1; }
-.brand__name span { color: var(--text-secondary); }
+/* "ABC" always yellow; "Construction" flips with the surface it sits on. */
+.brand__name { line-height: 1; color: var(--c-yellow); }
+.brand__name span { color: var(--text-primary); }
 
 .nav { display: none; }
 
@@ -427,8 +428,6 @@ hr { border: 0; border-top: var(--rule) solid var(--border-strong); margin: var(
     border-bottom-color: var(--c-yellow);
     font-weight: 700;
 }
-
-.nav__cta { margin-left: var(--sp-3); }
 
 .nav-toggle {
     display: inline-flex;
@@ -1108,6 +1107,7 @@ hr { border: 0; border-top: var(--rule) solid var(--border-strong); margin: var(
 .site-footer__links a:hover { text-decoration: underline; }
 
 .site-footer__brand .brand { color: var(--c-white); margin-bottom: var(--sp-4); }
+.site-footer__brand .brand__name span { color: var(--c-white); }
 
 .site-footer__bottom {
     display: flex;

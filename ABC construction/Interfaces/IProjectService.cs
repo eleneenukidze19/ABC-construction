@@ -26,6 +26,9 @@ public interface IProjectService
 
     Task<IReadOnlyList<string>> GetCategoriesAsync(CancellationToken cancellationToken = default);
 
+    /// <summary>Categories for the public filter bar, with their Georgian labels.</summary>
+    Task<IReadOnlyList<ProjectCategoryDto>> GetCategoryOptionsAsync(CancellationToken cancellationToken = default);
+
     Task<int> CountAsync(bool includeInactive = false, CancellationToken cancellationToken = default);
 
     Task<ProjectDetailDto> CreateAsync(ProjectWriteDto dto, CancellationToken cancellationToken = default);

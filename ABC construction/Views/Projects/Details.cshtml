@@ -6,10 +6,10 @@
 
 <section class="detail-hero">
     <div class="container">
-        <nav aria-label="Breadcrumb">
+        <nav aria-label="@T["Breadcrumb"].Value">
             <ol class="breadcrumb">
-                <li><a href="/">Home</a></li>
-                <li><a href="/projects">Projects</a></li>
+                <li><a href="/">@T["Home"]</a></li>
+                <li><a href="/projects">@T["Projects"]</a></li>
                 <li aria-current="page">@Model.Title</li>
             </ol>
         </nav>
@@ -24,7 +24,7 @@
     <div class="container detail-layout">
         <div>
             <div class="detail-block">
-                <h2>About this project</h2>
+                <h2>@T["About this project"]</h2>
                 @* pre-line preserves the admin's paragraph breaks; the value is
                    still HTML-encoded by Razor, so no markup can be injected. *@
                 <div class="detail-block__text">@Model.Description</div>
@@ -33,7 +33,7 @@
             @if (!string.IsNullOrWhiteSpace(Model.Timeline))
             {
                 <div class="detail-block">
-                    <h2>Timeline</h2>
+                    <h2>@T["Timeline"]</h2>
                     <div class="detail-block__text">@Model.Timeline</div>
                 </div>
             }
@@ -41,7 +41,7 @@
             @if (!string.IsNullOrWhiteSpace(Model.MaterialsUsed))
             {
                 <div class="detail-block">
-                    <h2>Materials &amp; methods</h2>
+                    <h2>@T["Materials &amp; methods"]</h2>
                     <div class="detail-block__text">@Model.MaterialsUsed</div>
                 </div>
             }
@@ -49,7 +49,7 @@
             @if (!string.IsNullOrWhiteSpace(Model.Challenges))
             {
                 <div class="detail-block">
-                    <h2>Challenges</h2>
+                    <h2>@T["Challenges"]</h2>
                     <div class="detail-block__text">@Model.Challenges</div>
                 </div>
             }
@@ -57,8 +57,8 @@
             @if (Model.HasGallery)
             {
                 <div class="detail-block">
-                    <h2>Gallery</h2>
-                    <div class="gallery" data-gallery>
+                    <h2>@T["Gallery"]</h2>
+                    <div class="gallery" data-gallery data-close-label="@T["Close image"].Value">
                         @foreach (var image in Model.Images)
                         {
                             var caption = string.IsNullOrWhiteSpace(image.Caption)
@@ -71,7 +71,7 @@
                                 <button type="button"
                                         data-lightbox="@image.ImageUrl"
                                         data-lightbox-alt="@caption"
-                                        aria-label="View larger image: @caption">
+                                        aria-label="@string.Format(T["View larger image: {0}"].Value, caption)">
                                     <img src="@image.ImageUrl"
                                          alt="@caption"
                                          width="600" height="400"
@@ -89,24 +89,24 @@
         </div>
 
         <aside class="spec-panel" aria-labelledby="project-facts">
-            <h2 id="project-facts">Project facts</h2>
+            <h2 id="project-facts">@T["Project facts"]</h2>
 
             <dl class="spec-list">
                 <div>
-                    <dt>Category</dt>
+                    <dt>@T["Category"]</dt>
                     <dd>@Model.Category</dd>
                 </div>
                 @if (Model.HasDuration)
                 {
                     <div>
-                        <dt>Duration</dt>
+                        <dt>@T["Duration"]</dt>
                         <dd>@Model.Duration</dd>
                     </div>
                 }
                 @if (Model.CompletionDate is { } completed)
                 {
                     <div>
-                        <dt>Completed</dt>
+                        <dt>@T["Completed"]</dt>
                         <dd>
                             <time datetime="@completed.ToString("yyyy-MM-dd")">
                                 @Model.CompletionDateDisplay
@@ -117,7 +117,7 @@
             </dl>
 
             <a class="btn btn--primary btn--block" href="/contact" style="margin-top: var(--sp-5);">
-                Discuss a similar job
+                @T["Discuss a similar job"]
             </a>
         </aside>
     </div>
@@ -125,6 +125,6 @@
 
 <section class="section section--tight section--sunken">
     <div class="container">
-        <a class="btn btn--secondary" href="/projects">&larr; Back to all projects</a>
+        <a class="btn btn--secondary" href="/projects">&larr; @T["Back to all projects"]</a>
     </div>
 </section>

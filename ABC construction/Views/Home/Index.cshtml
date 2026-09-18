@@ -1,39 +1,35 @@
 @model HomeViewModel
 @{
     ViewData["Title"] = null; // Home uses the bare brand name as its title
-    ViewData["Description"] = "ABC Construction delivers construction and fit-out services from design and installation to final handover, with a focus on quality, reliability, schedule and value.";
+    ViewData["Description"] = T["ABC Construction delivers construction and fit-out services from design and installation to final handover, with a focus on quality, reliability, schedule and value."].Value;
 
     // Static capability list: these are service lines, not database records, so
     // they are not admin-managed. Move to the DB if the client needs to edit them.
     var services = new[]
     {
-        ("01", "Construction", "We deliver construction projects from design and fit-out through installation to final handover."),
-        ("02", "Engineering", "Engineering leadership is present at every phase, ensuring quality, reliability and effective project delivery."),
-        ("03", "Project Delivery", "We deliver projects with consistent adherence to schedule and quality standards."),
-        ("04", "Design & Installation", "From design to installation and final handover, we create spaces that work.")
+        ("01", T["Construction"], T["We deliver construction projects from design and fit-out through installation to final handover."]),
+        ("02", T["Engineering"], T["Engineering leadership is present at every phase, ensuring quality, reliability and effective project delivery."]),
+        ("03", T["Project Delivery"], T["We deliver projects with consistent adherence to schedule and quality standards."]),
+        ("04", T["Design &amp; Installation"], T["From design to installation and final handover, we create spaces that work."])
     };
 }
 
 <section class="hero">
     <div class="container hero__inner">
         <div>
-            <p class="eyebrow">Construction &amp; Fit-out</p>
+            <p class="eyebrow">@T["Construction &amp; Fit-out"]</p>
 
             <h1 class="hero__title">
-                We build<br />
-                <em>high-quality, reliable spaces.</em>
+                @T["We build<br /><em>high-quality, reliable spaces.</em>"]
             </h1>
 
             <p class="hero__lead">
-                We are a construction and fit-out team delivering high-quality,
-                reliable spaces on time and on budget. From design and engineering
-                to installation and final handover, we make the entire building
-                process easy for our clients.
+                @T["We are a construction and fit-out team delivering high-quality, reliable spaces on time and on budget. From design and engineering to installation and final handover, we make the entire building process easy for our clients."]
             </p>
 
             <div class="hero__actions">
                 <a class="btn btn--primary" href="/projects">
-                    View our projects
+                    @T["View our projects"]
                     <span class="btn__arrow" aria-hidden="true">&rarr;</span>
                 </a>
             </div>
@@ -45,15 +41,15 @@
            the numeral reads first while screen readers still hear label-then-value. *@
         <dl class="hero__stats">
             <div class="stat">
-                <dt class="stat__label">Projects delivered</dt>
+                <dt class="stat__label">@T["Projects delivered"]</dt>
                 <dd class="stat__value tnum">@Model.CompletedProjectsCount</dd>
             </div>
             <div class="stat">
-                <dt class="stat__label">People on the team</dt>
+                <dt class="stat__label">@T["People on the team"]</dt>
                 <dd class="stat__value tnum">@Model.TeamSize</dd>
             </div>
             <div class="stat">
-                <dt class="stat__label">Years in business</dt>
+                <dt class="stat__label">@T["Years in business"]</dt>
                 <dd class="stat__value tnum">@Model.YearsInBusiness</dd>
             </div>
         </dl>
@@ -66,16 +62,13 @@
     <div class="container">
         <div class="section-head">
             <div class="section-head__text">
-                <p class="eyebrow">Who we are</p>
-                <h2>A contractor that turns up and finishes</h2>
+                <p class="eyebrow">@T["Who we are"]</p>
+                <h2>@T["A contractor that turns up and finishes"]</h2>
                 <p>
-                    We build high-quality, reliable spaces on time and on budget,
-                    while making the entire building process easy for our clients.
-                    Our engineering leadership is present at every phase, from
-                    design and installation to final handover.
+                    @T["We build high-quality, reliable spaces on time and on budget, while making the entire building process easy for our clients. Our engineering leadership is present at every phase, from design and installation to final handover."]
                 </p>
             </div>
-            <a class="btn btn--secondary" href="/employees">Meet the team</a>
+            <a class="btn btn--secondary" href="/employees">@T["Meet the team"]</a>
         </div>
 
         <div class="service-grid">
@@ -95,12 +88,12 @@
     <div class="container">
         <div class="section-head">
             <div class="section-head__text">
-                <p class="eyebrow">Selected work</p>
-                <h2>Recent projects</h2>
-                <p>A sample of what we have handed over most recently.</p>
+                <p class="eyebrow">@T["Selected work"]</p>
+                <h2>@T["Recent projects"]</h2>
+                <p>@T["A sample of what we have handed over most recently."]</p>
             </div>
             <a class="btn btn--secondary" href="/projects">
-                All projects
+                @T["All projects"]
                 <span class="btn__arrow" aria-hidden="true">&rarr;</span>
             </a>
         </div>
@@ -118,10 +111,9 @@
         {
             @* Honest empty state on a fresh install — no fake placeholder work *@
             <div class="empty-state">
-                <h3>No projects published yet</h3>
+                <h3>@T["No projects published yet"]</h3>
                 <p>
-                    Once projects are added through the admin panel they will
-                    appear here automatically.
+                    @T["Once projects are added through the admin panel they will appear here automatically."]
                 </p>
             </div>
         }
@@ -131,15 +123,14 @@
 <section class="cta-band">
     <div class="container cta-band__inner">
         <div>
-            <h2>Let’s build something that lasts.</h2>
+            <h2>@T["Let’s build something that lasts."]</h2>
             <p>
-                Send us the drawings, or just tell us roughly what you need. We
-                will tell you honestly whether we are the right contractor for it.
+                @T["Send us the drawings, or just tell us roughly what you need. We will tell you honestly whether we are the right contractor for it."]
             </p>
         </div>
         <div class="hero__actions">
             <a class="btn btn--primary" href="/contact">
-                Get in touch
+                @T["Get in touch"]
                 <span class="btn__arrow" aria-hidden="true">&rarr;</span>
             </a>
         </div>

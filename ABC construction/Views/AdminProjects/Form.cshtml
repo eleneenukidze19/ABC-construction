@@ -121,6 +121,68 @@
                     <span class="field__error" asp-validation-for="Challenges"></span>
                 </div>
 
+                <fieldset class="field--full form-section">
+                    <legend>Georgian version</legend>
+                    <span class="field__help">
+                        Optional. Shown to visitors reading the site in Georgian, which is
+                        the default language. Any field left empty shows the English text instead.
+                    </span>
+
+                    <div class="form-grid form-grid--2">
+                        <div class="field">
+                            <label asp-for="TitleKa">Title</label>
+                            <input asp-for="TitleKa" type="text" lang="ka" />
+                            <span class="field__error" asp-validation-for="TitleKa"></span>
+                        </div>
+
+                        <div class="field">
+                            <label asp-for="CategoryKa">Construction category</label>
+                            <input asp-for="CategoryKa" type="text" lang="ka" />
+                            <span class="field__help">
+                                Label on the Georgian filter. Use the same wording for every
+                                project in the category.
+                            </span>
+                            <span class="field__error" asp-validation-for="CategoryKa"></span>
+                        </div>
+
+                        <div class="field">
+                            <label asp-for="DurationKa">Duration</label>
+                            <input asp-for="DurationKa" type="text" lang="ka" placeholder="8 თვე" />
+                            <span class="field__error" asp-validation-for="DurationKa"></span>
+                        </div>
+
+                        <div class="field field--full">
+                            <label asp-for="ShortDescriptionKa">Short description</label>
+                            <textarea asp-for="ShortDescriptionKa" rows="3" maxlength="400" lang="ka"></textarea>
+                            <span class="field__error" asp-validation-for="ShortDescriptionKa"></span>
+                        </div>
+
+                        <div class="field field--full">
+                            <label asp-for="DescriptionKa">Full description</label>
+                            <textarea asp-for="DescriptionKa" rows="8" lang="ka"></textarea>
+                            <span class="field__error" asp-validation-for="DescriptionKa"></span>
+                        </div>
+
+                        <div class="field field--full">
+                            <label asp-for="TimelineKa">Timeline</label>
+                            <textarea asp-for="TimelineKa" rows="5" lang="ka"></textarea>
+                            <span class="field__error" asp-validation-for="TimelineKa"></span>
+                        </div>
+
+                        <div class="field">
+                            <label asp-for="MaterialsUsedKa">Materials and methods</label>
+                            <textarea asp-for="MaterialsUsedKa" rows="5" lang="ka"></textarea>
+                            <span class="field__error" asp-validation-for="MaterialsUsedKa"></span>
+                        </div>
+
+                        <div class="field">
+                            <label asp-for="ChallengesKa">Challenges</label>
+                            <textarea asp-for="ChallengesKa" rows="5" lang="ka"></textarea>
+                            <span class="field__error" asp-validation-for="ChallengesKa"></span>
+                        </div>
+                    </div>
+                </fieldset>
+
                 <div class="field field--full upload-field">
                     <label asp-for="CoverImage">Cover image</label>
                     <input asp-for="CoverImage"

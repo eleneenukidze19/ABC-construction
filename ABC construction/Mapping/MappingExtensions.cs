@@ -22,7 +22,11 @@ public static class MappingExtensions
         CompletionDate = project.CompletionDate,
         Category = project.Category,
         ImageUrl = project.ImageUrl,
-        IsActive = project.IsActive
+        IsActive = project.IsActive,
+        TitleKa = project.TitleKa,
+        ShortDescriptionKa = project.ShortDescriptionKa,
+        DurationKa = project.DurationKa,
+        CategoryKa = project.CategoryKa
     };
 
     public static ProjectDetailDto ToDetailDto(this Project project) => new()
@@ -41,6 +45,14 @@ public static class MappingExtensions
         CreatedDate = project.CreatedDate,
         UpdatedDate = project.UpdatedDate,
         IsActive = project.IsActive,
+        TitleKa = project.TitleKa,
+        ShortDescriptionKa = project.ShortDescriptionKa,
+        DurationKa = project.DurationKa,
+        CategoryKa = project.CategoryKa,
+        DescriptionKa = project.DescriptionKa,
+        TimelineKa = project.TimelineKa,
+        MaterialsUsedKa = project.MaterialsUsedKa,
+        ChallengesKa = project.ChallengesKa,
         Images = project.Images
             .OrderBy(i => i.SortOrder)
             .ThenBy(i => i.Id)
@@ -55,15 +67,16 @@ public static class MappingExtensions
     };
 
     // View models are built from DTOs, not entities: services hand DTOs to
-    // controllers, so an entity never reaches the MVC layer at all.
+    // controllers, so an entity never reaches the MVC layer at all. They are
+    // also where the request's language is applied (see ContentLanguage).
 
     public static ProjectViewModel ToViewModel(this ProjectSummaryDto dto) => new()
     {
         Id = dto.Id,
-        Title = dto.Title,
-        ShortDescription = dto.ShortDescription,
-        Duration = dto.Duration,
-        Category = dto.Category,
+        Title = ContentLanguage.Pick(dto.Title, dto.TitleKa),
+        ShortDescription = ContentLanguage.Pick(dto.ShortDescription, dto.ShortDescriptionKa),
+        Duration = ContentLanguage.PickOptional(dto.Duration, dto.DurationKa),
+        Category = ContentLanguage.Pick(dto.Category, dto.CategoryKa),
         CompletionDate = dto.CompletionDate,
         ImageUrl = dto.ImageUrl
     };
@@ -71,16 +84,16 @@ public static class MappingExtensions
     public static ProjectDetailViewModel ToDetailViewModel(this ProjectDetailDto dto) => new()
     {
         Id = dto.Id,
-        Title = dto.Title,
-        ShortDescription = dto.ShortDescription,
-        Description = dto.Description,
-        Duration = dto.Duration,
-        Category = dto.Category,
+        Title = ContentLanguage.Pick(dto.Title, dto.TitleKa),
+        ShortDescription = ContentLanguage.Pick(dto.ShortDescription, dto.ShortDescriptionKa),
+        Description = ContentLanguage.Pick(dto.Description, dto.DescriptionKa),
+        Duration = ContentLanguage.PickOptional(dto.Duration, dto.DurationKa),
+        Category = ContentLanguage.Pick(dto.Category, dto.CategoryKa),
         CompletionDate = dto.CompletionDate,
         ImageUrl = dto.ImageUrl,
-        Timeline = dto.Timeline,
-        MaterialsUsed = dto.MaterialsUsed,
-        Challenges = dto.Challenges,
+        Timeline = ContentLanguage.PickOptional(dto.Timeline, dto.TimelineKa),
+        MaterialsUsed = ContentLanguage.PickOptional(dto.MaterialsUsed, dto.MaterialsUsedKa),
+        Challenges = ContentLanguage.PickOptional(dto.Challenges, dto.ChallengesKa),
         Images = dto.Images
             .Select(i => new ProjectImageViewModel
             {
@@ -90,6 +103,9 @@ public static class MappingExtensions
             })
             .ToList()
     };
+
+    public static ProjectCategoryOption ToOption(this ProjectCategoryDto dto) =>
+        new(dto.Name, ContentLanguage.Pick(dto.Name, dto.NameKa));
 
     /// <summary>Applies a write DTO onto a new or existing entity.</summary>
     public static void ApplyTo(this ProjectWriteDto dto, Project project)
@@ -107,6 +123,14 @@ public static class MappingExtensions
         project.Timeline = Normalise(dto.Timeline);
         project.MaterialsUsed = Normalise(dto.MaterialsUsed);
         project.Challenges = Normalise(dto.Challenges);
+        project.TitleKa = Normalise(dto.TitleKa);
+        project.DescriptionKa = Normalise(dto.DescriptionKa);
+        project.ShortDescriptionKa = Normalise(dto.ShortDescriptionKa);
+        project.DurationKa = Normalise(dto.DurationKa);
+        project.CategoryKa = Normalise(dto.CategoryKa);
+        project.TimelineKa = Normalise(dto.TimelineKa);
+        project.MaterialsUsedKa = Normalise(dto.MaterialsUsedKa);
+        project.ChallengesKa = Normalise(dto.ChallengesKa);
         project.IsActive = dto.IsActive;
     }
 
@@ -118,6 +142,9 @@ public static class MappingExtensions
         FullName = employee.FullName,
         Position = employee.Position,
         Biography = employee.Biography,
+        FullNameKa = employee.FullNameKa,
+        PositionKa = employee.PositionKa,
+        BiographyKa = employee.BiographyKa,
         ImageUrl = employee.ImageUrl,
         SortOrder = employee.SortOrder,
         IsActive = employee.IsActive
@@ -126,9 +153,9 @@ public static class MappingExtensions
     public static EmployeeViewModel ToViewModel(this EmployeeDto dto) => new()
     {
         Id = dto.Id,
-        FullName = dto.FullName,
-        Position = dto.Position,
-        Biography = dto.Biography,
+        FullName = ContentLanguage.Pick(dto.FullName, dto.FullNameKa),
+        Position = ContentLanguage.Pick(dto.Position, dto.PositionKa),
+        Biography = ContentLanguage.PickOptional(dto.Biography, dto.BiographyKa),
         ImageUrl = dto.ImageUrl
     };
 
@@ -137,6 +164,9 @@ public static class MappingExtensions
         employee.FullName = dto.FullName.Trim();
         employee.Position = dto.Position.Trim();
         employee.Biography = Normalise(dto.Biography);
+        employee.FullNameKa = Normalise(dto.FullNameKa);
+        employee.PositionKa = Normalise(dto.PositionKa);
+        employee.BiographyKa = Normalise(dto.BiographyKa);
         employee.ImageUrl = Normalise(dto.ImageUrl);
         employee.SortOrder = dto.SortOrder;
         employee.IsActive = dto.IsActive;
@@ -150,15 +180,17 @@ public static class MappingExtensions
         Email = info.Email,
         PhoneNumber = info.PhoneNumber,
         Address = info.Address,
-        Description = info.Description
+        Description = info.Description,
+        AddressKa = info.AddressKa,
+        DescriptionKa = info.DescriptionKa
     };
 
     public static ContactViewModel ToViewModel(this CompanyInformationDto dto) => new()
     {
         Email = dto.Email,
         PhoneNumber = dto.PhoneNumber,
-        Address = dto.Address,
-        Description = dto.Description
+        Address = ContentLanguage.Pick(dto.Address, dto.AddressKa),
+        Description = ContentLanguage.PickOptional(dto.Description, dto.DescriptionKa)
     };
 
     public static void ApplyTo(this CompanyInformationWriteDto dto, CompanyInformation info)
@@ -167,6 +199,8 @@ public static class MappingExtensions
         info.PhoneNumber = dto.PhoneNumber.Trim();
         info.Address = dto.Address.Trim();
         info.Description = Normalise(dto.Description);
+        info.AddressKa = Normalise(dto.AddressKa);
+        info.DescriptionKa = Normalise(dto.DescriptionKa);
     }
 
     // --- Paging ---

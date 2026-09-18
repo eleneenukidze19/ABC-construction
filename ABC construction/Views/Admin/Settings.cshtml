@@ -70,6 +70,29 @@
                     </span>
                     <span class="field__error" asp-validation-for="Description"></span>
                 </div>
+
+                <fieldset class="field--full form-section">
+                    <legend>Georgian version</legend>
+                    <span class="field__help">
+                        Optional. Shown to visitors reading the site in Georgian, which is
+                        the default language. Any field left empty shows the English text instead.
+                        Email and phone are the same in both languages.
+                    </span>
+
+                    <div class="form-grid">
+                        <div class="field">
+                            <label asp-for="AddressKa">Business address</label>
+                            <input asp-for="AddressKa" type="text" lang="ka" />
+                            <span class="field__error" asp-validation-for="AddressKa"></span>
+                        </div>
+
+                        <div class="field">
+                            <label asp-for="DescriptionKa">Company description</label>
+                            <textarea asp-for="DescriptionKa" rows="6" lang="ka"></textarea>
+                            <span class="field__error" asp-validation-for="DescriptionKa"></span>
+                        </div>
+                    </div>
+                </fieldset>
             </div>
 
             <div class="form-actions">

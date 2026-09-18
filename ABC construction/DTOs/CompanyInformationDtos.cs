@@ -10,6 +10,8 @@ public class CompanyInformationDto
     public string PhoneNumber { get; set; } = string.Empty;
     public string Address { get; set; } = string.Empty;
     public string? Description { get; set; }
+    public string? AddressKa { get; set; }
+    public string? DescriptionKa { get; set; }
 }
 
 /// <summary>
@@ -33,4 +35,12 @@ public class CompanyInformationWriteDto
 
     [StringLength(5000)]
     public string? Description { get; set; }
+
+    // Georgian versions, optional: an empty one falls back to English.
+
+    [StringLength(300)]
+    public string? AddressKa { get; set; }
+
+    [StringLength(5000)]
+    public string? DescriptionKa { get; set; }
 }

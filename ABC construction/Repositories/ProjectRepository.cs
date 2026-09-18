@@ -85,6 +85,28 @@ public class ProjectRepository : IProjectRepository
             .ToListAsync(cancellationToken);
     }
 
+    public async Task<IReadOnlyList<(string Name, string? NameKa)>> GetCategoryLabelsAsync(
+        CancellationToken cancellationToken = default)
+    {
+        // Distinct pairs, then collapsed in memory: projects in one category
+        // may disagree on (or omit) the Georgian label, and the list is tiny.
+        var pairs = await _context.Projects
+            .Where(p => p.IsActive)
+            .Select(p => new { p.Category, p.CategoryKa })
+            .Distinct()
+            .ToListAsync(cancellationToken);
+
+        return pairs
+            .GroupBy(p => p.Category)
+            .OrderBy(g => g.Key, StringComparer.Ordinal)
+            .Select(g => (g.Key, g
+                .Select(p => p.CategoryKa)
+                .Where(ka => !string.IsNullOrWhiteSpace(ka))
+                .Order(StringComparer.Ordinal)
+                .FirstOrDefault()))
+            .ToList();
+    }
+
     public Task<int> CountAsync(bool includeInactive = false, CancellationToken cancellationToken = default)
         => BaseQuery(includeInactive).CountAsync(cancellationToken);
 

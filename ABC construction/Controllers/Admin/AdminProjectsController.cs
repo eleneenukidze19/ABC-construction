@@ -110,6 +110,14 @@ public class AdminProjectsController : Controller
             Timeline = project.Timeline,
             MaterialsUsed = project.MaterialsUsed,
             Challenges = project.Challenges,
+            TitleKa = project.TitleKa,
+            CategoryKa = project.CategoryKa,
+            ShortDescriptionKa = project.ShortDescriptionKa,
+            DescriptionKa = project.DescriptionKa,
+            DurationKa = project.DurationKa,
+            TimelineKa = project.TimelineKa,
+            MaterialsUsedKa = project.MaterialsUsedKa,
+            ChallengesKa = project.ChallengesKa,
             IsActive = project.IsActive,
             ExistingImageUrl = project.ImageUrl,
             Images = project.Images
@@ -322,6 +330,14 @@ public class AdminProjectsController : Controller
         Timeline = model.Timeline,
         MaterialsUsed = model.MaterialsUsed,
         Challenges = model.Challenges,
+        TitleKa = model.TitleKa,
+        CategoryKa = model.CategoryKa,
+        ShortDescriptionKa = model.ShortDescriptionKa,
+        DescriptionKa = model.DescriptionKa,
+        DurationKa = model.DurationKa,
+        TimelineKa = model.TimelineKa,
+        MaterialsUsedKa = model.MaterialsUsedKa,
+        ChallengesKa = model.ChallengesKa,
         IsActive = model.IsActive
     };
 }

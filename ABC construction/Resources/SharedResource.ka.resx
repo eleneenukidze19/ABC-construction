@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="&amp;copy; {0} ABC Construction. All rights reserved." xml:space="preserve">
+    <value>&amp;copy; {0} ABC Construction. ყველა უფლება დაცულია.</value>
+  </data>
+  <data name="{0} projects" xml:space="preserve">
+    <value>პროექტები: {0}</value>
+  </data>
+  <data name="A contractor that turns up and finishes" xml:space="preserve">
+    <value>კონტრაქტორი, რომელიც საქმეს ბოლომდე მიიყვანს</value>
+  </data>
+  <data name="A sample of what we have handed over most recently." xml:space="preserve">
+    <value>ჩვენ მიერ ბოლოს ჩაბარებული ობიექტები.</value>
+  </data>
+  <data name="ABC Construction — home" xml:space="preserve">
+    <value>ABC Construction — მთავარი გვერდი</value>
+  </data>
+  <data name="ABC Construction delivers construction and fit-out services from design and installation to final handover, with a focus on quality, reliability, schedule and value." xml:space="preserve">
+    <value>ABC Construction გთავაზობთ მშენებლობისა და შიდა მოწყობის მომსახურებას — დაპროექტებიდან და მონტაჟიდან საბოლოო ჩაბარებამდე: ხარისხზე, საიმედოობაზე, ვადებსა და ღირებულებაზე ორიენტირებით.</value>
+  </data>
+  <data name="ABC Construction is a construction and fit-out company delivering high-quality, reliable spaces on time and on budget, from design through final handover." xml:space="preserve">
+    <value>ABC Construction არის სამშენებლო და შიდა მოწყობის კომპანია, რომელიც ქმნის მაღალი ხარისხის საიმედო სივრცეებს დროულად და ხარისხიანად — დაპროექტებიდან საბოლოო ჩაბარებამდე.</value>
+  </data>
+  <data name="About the company" xml:space="preserve">
+    <value>კომპანიის შესახებ</value>
+  </data>
+  <data name="About this project" xml:space="preserve">
+    <value>პროექტის შესახებ</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>მისამართი</value>
+  </data>
+  <data name="Admin dashboard" xml:space="preserve">
+    <value>ადმინისტრატორის პანელი</value>
+  </data>
+  <data name="All projects" xml:space="preserve">
+    <value>ყველა პროექტი</value>
+  </data>
+  <data name="All work" xml:space="preserve">
+    <value>ყველა</value>
+  </data>
+  <data name="An administrator can publish the company email, phone number and address from the admin panel under Company settings." xml:space="preserve">
+    <value>ადმინისტრატორს შეუძლია კომპანიის ელფოსტის, ტელეფონის ნომრისა და მისამართის გამოქვეყნება ადმინისტრატორის პანელიდან, განყოფილებაში &amp;bdquo;Company settings&amp;ldquo;.</value>
+  </data>
+  <data name="Back to all projects" xml:space="preserve">
+    <value>ყველა პროექტზე დაბრუნება</value>
+  </data>
+  <data name="Back to home" xml:space="preserve">
+    <value>მთავარ გვერდზე დაბრუნება</value>
+  </data>
+  <data name="Breadcrumb" xml:space="preserve">
+    <value>ნავიგაციის ბილიკი</value>
+  </data>
+  <data name="Built for durability." xml:space="preserve">
+    <value>აშენებულია დიდი ხნით.</value>
+  </data>
+  <data name="Category" xml:space="preserve">
+    <value>კატეგორია</value>
+  </data>
+  <data name="Challenges" xml:space="preserve">
+    <value>გამოწვევები</value>
+  </data>
+  <data name="Close image" xml:space="preserve">
+    <value>სურათის დახურვა</value>
+  </data>
+  <data name="Close menu" xml:space="preserve">
+    <value>მენიუს დახურვა</value>
+  </data>
+  <data name="Completed" xml:space="preserve">
+    <value>დასრულდა</value>
+  </data>
+  <data name="Completed construction projects by ABC Construction — commercial, residential and industrial work with durations and completion dates." xml:space="preserve">
+    <value>ABC Construction-ის დასრულებული პროექტები — კომერციული, საცხოვრებელი და სამრეწველო ობიექტები: სამუშაოს ხანგრძლივობითა და დასრულების თარიღებით.</value>
+  </data>
+  <data name="Completed work, with the duration each job actually took and the month it was handed over." xml:space="preserve">
+    <value>დასრულებული სამუშაოები — თითოეული პროექტი რეალური ხანგრძლივობითა და ჩაბარების თვით.</value>
+  </data>
+  <data name="Construction" xml:space="preserve">
+    <value>მშენებლობა</value>
+  </data>
+  <data name="Construction &amp;amp; Fit-out" xml:space="preserve">
+    <value>მშენებლობა და შიდა მოწყობა</value>
+  </data>
+  <data name="Construction and fit-out, from design and installation to final handover. High-quality, reliable spaces delivered on time and on budget." xml:space="preserve">
+    <value>მშენებლობა და შიდა მოწყობა — დაპროექტებიდან და მონტაჟიდან საბოლოო ჩაბარებამდე. მაღალი ხარისხის, საიმედო სივრცეები დროულად და ბიუჯეტის ფარგლებში.</value>
+  </data>
+  <data name="Contact" xml:space="preserve">
+    <value>კონტაქტი</value>
+  </data>
+  <data name="Contact details are not set up yet" xml:space="preserve">
+    <value>საკონტაქტო ინფორმაცია ჯერ არ არის დამატებული</value>
+  </data>
+  <data name="Contact us" xml:space="preserve">
+    <value>დაგვიკავშირდით</value>
+  </data>
+  <data name="Design &amp;amp; Installation" xml:space="preserve">
+    <value>დაპროექტება და მონტაჟი</value>
+  </data>
+  <data name="Directly employed, not subcontracted. These are the people who will price your job and the people who will run it." xml:space="preserve">
+    <value>ჩვენი საკუთარი თანამშრომლები და არა ქვეკონტრაქტორები. სწორედ ისინი შეაფასებენ თქვენს პროექტს და უხელმძღვანელებენ მას.</value>
+  </data>
+  <data name="Discuss a similar job" xml:space="preserve">
+    <value>მსგავსი პროექტის განხილვა</value>
+  </data>
+  <data name="Duration" xml:space="preserve">
+    <value>ხანგრძლივობა</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>ელფოსტა</value>
+  </data>
+  <data name="Engineering" xml:space="preserve">
+    <value>ინჟინერია</value>
+  </data>
+  <data name="Engineering leadership is present at every phase, ensuring quality, reliability and effective project delivery." xml:space="preserve">
+    <value>საინჟინრო ხელმძღვანელობა ჩართულია ყველა ეტაპზე, რაც უზრუნველყოფს ხარისხს, საიმედოობასა და პროექტის ეფექტიან განხორციელებას.</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>შეცდომა</value>
+  </data>
+  <data name="Error 404" xml:space="preserve">
+    <value>შეცდომა 404</value>
+  </data>
+  <data name="Filter projects by category" xml:space="preserve">
+    <value>პროექტების გაფილტვრა კატეგორიის მიხედვით</value>
+  </data>
+  <data name="From design to installation and final handover, we create spaces that work." xml:space="preserve">
+    <value>დაპროექტებიდან მონტაჟამდე და საბოლოო ჩაბარებამდე ვქმნით ფუნქციურ სივრცეებს.</value>
+  </data>
+  <data name="Gallery" xml:space="preserve">
+    <value>გალერეა</value>
+  </data>
+  <data name="Get in touch" xml:space="preserve">
+    <value>დაგვიკავშირდით</value>
+  </data>
+  <data name="Get in touch with ABC Construction to discuss your construction or fit-out project and how we can help deliver it on time and on budget." xml:space="preserve">
+    <value>დაუკავშირდით ABC Construction-ს თქვენი მშენებლობის ან შიდა მოწყობის პროექტის განსახილველად და გაიგეთ, როგორ დაგეხმარებით მის დროულად და ბიუჯეტის ფარგლებში განხორციელებაში.</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>მთავარი</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>ენა</value>
+  </data>
+  <data name="Let’s build something that lasts." xml:space="preserve">
+    <value>ავაშენოთ ის, რაც დიდხანს გაძლებს.</value>
+  </data>
+  <data name="Main" xml:space="preserve">
+    <value>მთავარი მენიუ</value>
+  </data>
+  <data name="Main (mobile)" xml:space="preserve">
+    <value>მთავარი მენიუ (მობილური)</value>
+  </data>
+  <data name="Materials &amp;amp; methods" xml:space="preserve">
+    <value>მასალები და მეთოდები</value>
+  </data>
+  <data name="Meet the team" xml:space="preserve">
+    <value>გაიცანით გუნდი</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>შემდეგი</value>
+  </data>
+  <data name="No projects published yet" xml:space="preserve">
+    <value>პროექტები ჯერ არ გამოქვეყნებულა</value>
+  </data>
+  <data name="No team members published yet" xml:space="preserve">
+    <value>გუნდის წევრები ჯერ არ გამოქვეყნებულა</value>
+  </data>
+  <data name="Not published yet" xml:space="preserve">
+    <value>ჯერ არ გამოქვეყნებულა</value>
+  </data>
+  <data name="Nothing in this category" xml:space="preserve">
+    <value>ამ კატეგორიაში პროექტები არ არის</value>
+  </data>
+  <data name="Once projects are added through the admin panel they will appear here automatically." xml:space="preserve">
+    <value>ადმინისტრატორის პანელიდან დამატებული პროექტები აქ ავტომატურად გამოჩნდება.</value>
+  </data>
+  <data name="Open menu" xml:space="preserve">
+    <value>მენიუს გახსნა</value>
+  </data>
+  <data name="Our team" xml:space="preserve">
+    <value>ჩვენი გუნდი</value>
+  </data>
+  <data name="Our work" xml:space="preserve">
+    <value>ჩვენი სამუშაოები</value>
+  </data>
+  <data name="Page {0} of {1}" xml:space="preserve">
+    <value>გვერდი {0} / {1}</value>
+  </data>
+  <data name="Page not found" xml:space="preserve">
+    <value>გვერდი ვერ მოიძებნა</value>
+  </data>
+  <data name="People on the team" xml:space="preserve">
+    <value>გუნდის წევრი</value>
+  </data>
+  <data name="Phone" xml:space="preserve">
+    <value>ტელეფონი</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>წინა</value>
+  </data>
+  <data name="Project Delivery" xml:space="preserve">
+    <value>პროექტის განხორციელება</value>
+  </data>
+  <data name="Project facts" xml:space="preserve">
+    <value>პროექტის მონაცემები</value>
+  </data>
+  <data name="Project pages" xml:space="preserve">
+    <value>პროექტების გვერდები</value>
+  </data>
+  <data name="Projects" xml:space="preserve">
+    <value>პროექტები</value>
+  </data>
+  <data name="Projects added through the admin panel will appear here." xml:space="preserve">
+    <value>ადმინისტრატორის პანელიდან დამატებული პროექტები აქ გამოჩნდება.</value>
+  </data>
+  <data name="Projects delivered" xml:space="preserve">
+    <value>ჩაბარებული პროექტი</value>
+  </data>
+  <data name="Recent projects" xml:space="preserve">
+    <value>ბოლო პროექტები</value>
+  </data>
+  <data name="Reference code:" xml:space="preserve">
+    <value>საცნობარო კოდი:</value>
+  </data>
+  <data name="Request a quote" xml:space="preserve">
+    <value>ფასის მოთხოვნა</value>
+  </data>
+  <data name="Selected work" xml:space="preserve">
+    <value>რჩეული სამუშაოები</value>
+  </data>
+  <data name="Send drawings, a scope, or just a rough description. We will tell you honestly whether we are the right contractor for the job." xml:space="preserve">
+    <value>გამოგვიგზავნეთ ნახაზები, სამუშაოების მოცულობა ან უბრალოდ მოკლე აღწერა. გულწრფელად გეტყვით, ვართ თუ არა ამ სამუშაოსთვის შესაფერისი კონტრაქტორი.</value>
+  </data>
+  <data name="Send us the drawings, or just tell us roughly what you need. We will tell you honestly whether we are the right contractor for it." xml:space="preserve">
+    <value>გამოგვიგზავნეთ ნახაზები ან უბრალოდ მოგვიყევით, დაახლოებით რა გჭირდებათ. გულწრფელად გეტყვით, ვართ თუ არა ამისთვის შესაფერისი კონტრაქტორი.</value>
+  </data>
+  <data name="Show all projects" xml:space="preserve">
+    <value>ყველა პროექტის ჩვენება</value>
+  </data>
+  <data name="Showing {0} of {1} projects." xml:space="preserve">
+    <value>ნაჩვენებია {0} პროექტი {1}-დან.</value>
+  </data>
+  <data name="Site" xml:space="preserve">
+    <value>საიტი</value>
+  </data>
+  <data name="Skip to main content" xml:space="preserve">
+    <value>მთავარ შინაარსზე გადასვლა</value>
+  </data>
+  <data name="Something went wrong" xml:space="preserve">
+    <value>რაღაც შეცდომა მოხდა</value>
+  </data>
+  <data name="Staff added through the admin panel will appear here." xml:space="preserve">
+    <value>ადმინისტრატორის პანელიდან დამატებული თანამშრომლები აქ გამოჩნდებიან.</value>
+  </data>
+  <data name="Team" xml:space="preserve">
+    <value>გუნდი</value>
+  </data>
+  <data name="Tell us what you are planning and we will give you a straight answer on cost and programme." xml:space="preserve">
+    <value>მოგვიყევით, რას გეგმავთ, და პირდაპირ გეტყვით ღირებულებასა და ვადებზე.</value>
+  </data>
+  <data name="The page you asked for does not exist, or it has been moved. The links below will get you back on track." xml:space="preserve">
+    <value>მოთხოვნილი გვერდი არ არსებობს ან გადატანილია. ქვემოთ მოცემული ბმულები დაგეხმარებათ სწორ გზაზე დაბრუნებაში.</value>
+  </data>
+  <data name="The people" xml:space="preserve">
+    <value>ადამიანები</value>
+  </data>
+  <data name="The people who run ABC Construction projects — project managers, architects, engineers and site trades." xml:space="preserve">
+    <value>ადამიანები, რომლებიც ABC Construction-ის პროექტებს უძღვებიან — პროექტის მენეჯერები, არქიტექტორები, ინჟინრები და სამშენებლო სპეციალისტები.</value>
+  </data>
+  <data name="There are no projects filed under &amp;ldquo;{0}&amp;rdquo; yet." xml:space="preserve">
+    <value>კატეგორიაში &amp;bdquo;{0}&amp;ldquo; პროექტები ჯერ არ არის.</value>
+  </data>
+  <data name="Timeline" xml:space="preserve">
+    <value>ქრონოლოგია</value>
+  </data>
+  <data name="View larger image: {0}" xml:space="preserve">
+    <value>სურათის გადიდება: {0}</value>
+  </data>
+  <data name="View our projects" xml:space="preserve">
+    <value>ჩვენი პროექტები</value>
+  </data>
+  <data name="View projects" xml:space="preserve">
+    <value>პროექტების ნახვა</value>
+  </data>
+  <data name="Want something similar built?" xml:space="preserve">
+    <value>გსურთ მსგავსი ობიექტის შექმნა?</value>
+  </data>
+  <data name="Want to work with us?" xml:space="preserve">
+    <value>გსურთ ჩვენთან მუშაობა?</value>
+  </data>
+  <data name="We are a construction and fit-out team delivering high-quality, reliable spaces on time and on budget. From design and engineering to installation and final handover, we make the entire building process easy for our clients." xml:space="preserve">
+    <value>ჩვენ ვართ მშენებლობისა და შიდა მოწყობის გუნდი, რომელიც ქმნის მაღალი ხარისხის, საიმედო სივრცეებს დროულად და ბიუჯეტის ფარგლებში. დაპროექტებიდან და ინჟინერიიდან მონტაჟამდე და საბოლოო ჩაბარებამდე, მშენებლობის მთელ პროცესს ჩვენი კლიენტებისთვის მარტივს ვხდით.</value>
+  </data>
+  <data name="We build high-quality, reliable spaces on time and on budget, while making the entire building process easy for our clients. Our engineering leadership is present at every phase, from design and installation to final handover." xml:space="preserve">
+    <value>ვაშენებთ მაღალი ხარისხის, საიმედო სივრცეებს დროულად და ხარისხიანად და მშენებლობის მთელ პროცესს კლიენტებისთვის მარტივს ვხდით. ჩვენი საინჟინრო ხელმძღვანელობა ჩართულია ყველა ეტაპზე — დაპროექტებიდან და მონტაჟიდან საბოლოო ჩაბარებამდე.</value>
+  </data>
+  <data name="We build&lt;br /&gt;&lt;em&gt;high-quality, reliable spaces.&lt;/em&gt;" xml:space="preserve">
+    <value>ვაშენებთ&lt;br /&gt;&lt;em&gt;მაღალი ხარისხის, საიმედო სივრცეებს.&lt;/em&gt;</value>
+  </data>
+  <data name="We deliver construction projects from design and fit-out through installation to final handover." xml:space="preserve">
+    <value>ვახორციელებთ სამშენებლო პროექტებს დაპროექტებიდან და შიდა მოწყობიდან მონტაჟამდე და საბოლოო ჩაბარებამდე.</value>
+  </data>
+  <data name="We deliver projects with consistent adherence to schedule and quality standards." xml:space="preserve">
+    <value>პროექტებს ვასრულებთ ვადებისა და ხარისხის სტანდარტების მუდმივი დაცვით.</value>
+  </data>
+  <data name="We hit an unexpected problem handling your request. The issue has been logged and will be looked at. Please try again in a moment." xml:space="preserve">
+    <value>თქვენი მოთხოვნის დამუშავებისას მოულოდნელი შეცდომა მოხდა. პრობლემა დაფიქსირდა და განხილული იქნება. გთხოვთ, ცოტა ხანში სცადოთ თავიდან.</value>
+  </data>
+  <data name="We take on skilled trades and site staff regularly. Get in touch and tell us what you do." xml:space="preserve">
+    <value>რეგულარულად ვიღებთ კვალიფიციურ ხელოსნებსა და სამშენებლო პერსონალს. დაგვიკავშირდით და მოგვიყევით, რას საქმიანობთ.</value>
+  </data>
+  <data name="Who we are" xml:space="preserve">
+    <value>ვინ ვართ ჩვენ</value>
+  </data>
+  <data name="Years in business" xml:space="preserve">
+    <value>წელი ბაზარზე</value>
+  </data>
+</root>

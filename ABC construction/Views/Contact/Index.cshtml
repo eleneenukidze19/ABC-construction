@@ -1,16 +1,15 @@
 @model ContactViewModel
 @{
-    ViewData["Title"] = "Contact";
-    ViewData["Description"] = "Get in touch with ABC Construction to discuss your construction or fit-out project and how we can help deliver it on time and on budget.";
+    ViewData["Title"] = T["Contact"].Value;
+    ViewData["Description"] = T["Get in touch with ABC Construction to discuss your construction or fit-out project and how we can help deliver it on time and on budget."].Value;
 }
 
 <section class="detail-hero">
     <div class="container">
-        <p class="eyebrow">Get in touch</p>
-        <h1>Contact us</h1>
+        <p class="eyebrow">@T["Get in touch"]</p>
+        <h1>@T["Contact us"]</h1>
         <p class="hero__lead" style="margin-bottom:0;">
-            Send drawings, a scope, or just a rough description. We will tell you
-            honestly whether we are the right contractor for the job.
+            @T["Send drawings, a scope, or just a rough description. We will tell you honestly whether we are the right contractor for the job."]
         </p>
     </div>
 </section>
@@ -19,7 +18,7 @@
     <div class="container">
         <div class="contact-grid">
             <div class="contact-card">
-                <h2 class="contact-card__label">Email</h2>
+                <h2 class="contact-card__label">@T["Email"]</h2>
                 <p class="contact-card__value">
                     @if (Model.IsEmailSet)
                     {
@@ -35,14 +34,14 @@
                                 <circle cx="12" cy="12" r="10" />
                                 <path d="M12 8v5M12 16h.01" />
                             </svg>
-                            Not published yet
+                            @T["Not published yet"]
                         </span>
                     }
                 </p>
             </div>
 
             <div class="contact-card">
-                <h2 class="contact-card__label">Phone</h2>
+                <h2 class="contact-card__label">@T["Phone"]</h2>
                 <p class="contact-card__value">
                     @if (Model.IsPhoneSet)
                     {
@@ -56,14 +55,14 @@
                                 <circle cx="12" cy="12" r="10" />
                                 <path d="M12 8v5M12 16h.01" />
                             </svg>
-                            Not published yet
+                            @T["Not published yet"]
                         </span>
                     }
                 </p>
             </div>
 
             <div class="contact-card">
-                <h2 class="contact-card__label">Address</h2>
+                <h2 class="contact-card__label">@T["Address"]</h2>
                 <p class="contact-card__value">
                     @if (Model.IsAddressSet)
                     {
@@ -77,7 +76,7 @@
                                 <circle cx="12" cy="12" r="10" />
                                 <path d="M12 8v5M12 16h.01" />
                             </svg>
-                            Not published yet
+                            @T["Not published yet"]
                         </span>
                     }
                 </p>
@@ -87,7 +86,7 @@
         @if (!string.IsNullOrWhiteSpace(Model.Description))
         {
             <div class="prose" style="margin-top: var(--sp-7);">
-                <h2>About the company</h2>
+                <h2>@T["About the company"]</h2>
                 <div class="detail-block__text">@Model.Description</div>
             </div>
         }
@@ -96,10 +95,9 @@
         {
             @* Only shown while the site is still on seeded placeholders *@
             <div class="empty-state" style="margin-top: var(--sp-7);">
-                <h2>Contact details are not set up yet</h2>
+                <h2>@T["Contact details are not set up yet"]</h2>
                 <p>
-                    An administrator can publish the company email, phone number
-                    and address from the admin panel under Company settings.
+                    @T["An administrator can publish the company email, phone number and address from the admin panel under Company settings."]
                 </p>
             </div>
         }

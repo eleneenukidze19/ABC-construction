@@ -116,6 +116,19 @@ public class ProjectService : IProjectService
             cancellationToken);
     }
 
+    public async Task<IReadOnlyList<ProjectCategoryDto>> GetCategoryOptionsAsync(
+        CancellationToken cancellationToken = default)
+    {
+        return await _cache.GetOrCreateAsync(
+            CacheRegions.Projects,
+            "category-options",
+            async ct => (IReadOnlyList<ProjectCategoryDto>)(await _repository.GetCategoryLabelsAsync(ct))
+                .Select(c => new ProjectCategoryDto { Name = c.Name, NameKa = c.NameKa })
+                .ToList(),
+            _cachingOptions.ProjectsTtl,
+            cancellationToken);
+    }
+
     public Task<int> CountAsync(bool includeInactive = false, CancellationToken cancellationToken = default)
         => _repository.CountAsync(includeInactive, cancellationToken);
 

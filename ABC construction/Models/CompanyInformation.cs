@@ -24,6 +24,14 @@ public class CompanyInformation
 
     public string? Description { get; set; }
 
+    // --- Georgian versions; an empty one falls back to English. Email and
+    // phone need no translation. ---
+
+    [MaxLength(300)]
+    public string? AddressKa { get; set; }
+
+    public string? DescriptionKa { get; set; }
+
     /// <summary>
     /// Placeholder required by README section 9 until the real details are
     /// entered through the admin panel.

@@ -65,7 +65,9 @@ public class AdminController : Controller
             Email = company.Email,
             PhoneNumber = company.PhoneNumber,
             Address = company.Address,
-            Description = company.Description
+            Description = company.Description,
+            AddressKa = company.AddressKa,
+            DescriptionKa = company.DescriptionKa
         });
     }
 
@@ -84,7 +86,9 @@ public class AdminController : Controller
             Email = model.Email,
             PhoneNumber = model.PhoneNumber,
             Address = model.Address,
-            Description = model.Description
+            Description = model.Description,
+            AddressKa = model.AddressKa,
+            DescriptionKa = model.DescriptionKa
         }, cancellationToken);
 
         _logger.LogInformation("Admin {User} updated company settings.", User.Identity?.Name);

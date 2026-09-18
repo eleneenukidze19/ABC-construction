@@ -14,9 +14,12 @@ public class ProjectViewModel
     public DateTime? CompletionDate { get; set; }
     public string? ImageUrl { get; set; }
 
-    /// <summary>Pre-formatted for display, e.g. "March 2024"; null when no date is recorded.</summary>
+    /// <summary>
+    /// Pre-formatted in the visitor's language, e.g. "March 2024" or
+    /// "მარტი 2024"; null when no date is recorded.
+    /// </summary>
     public string? CompletionDateDisplay =>
-        CompletionDate?.ToString("MMMM yyyy", System.Globalization.CultureInfo.InvariantCulture);
+        CompletionDate?.ToString("MMMM yyyy", System.Globalization.CultureInfo.CurrentCulture);
 
     public bool HasDuration => !string.IsNullOrWhiteSpace(Duration);
 
@@ -44,12 +47,25 @@ public class ProjectImageViewModel
     public string? Caption { get; set; }
 }
 
+/// <summary>
+/// One filter chip. The URL keeps the English <see cref="Value"/> in both
+/// languages, so a shared filter link works whichever language opens it.
+/// </summary>
+public record ProjectCategoryOption(string Value, string Label);
+
 /// <summary>Backing model for the paged /projects listing, including filters.</summary>
 public class ProjectListViewModel
 {
     public IReadOnlyList<ProjectViewModel> Projects { get; set; } = Array.Empty<ProjectViewModel>();
-    public IReadOnlyList<string> Categories { get; set; } = Array.Empty<string>();
+    public IReadOnlyList<ProjectCategoryOption> Categories { get; set; } = Array.Empty<ProjectCategoryOption>();
+
+    /// <summary>The category filter as it appears in the URL (always the English name).</summary>
     public string? SelectedCategory { get; set; }
+
+    /// <summary><see cref="SelectedCategory"/> in the visitor's language, for headings.</summary>
+    public string? SelectedCategoryLabel =>
+        Categories.FirstOrDefault(c => string.Equals(c.Value, SelectedCategory, StringComparison.OrdinalIgnoreCase))?.Label
+        ?? SelectedCategory;
     public int Page { get; set; } = 1;
     public int PageSize { get; set; }
     public int TotalPages { get; set; }

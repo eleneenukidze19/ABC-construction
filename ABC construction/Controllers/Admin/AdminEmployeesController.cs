@@ -93,6 +93,9 @@ public class AdminEmployeesController : Controller
             FullName = employee.FullName,
             Position = employee.Position,
             Biography = employee.Biography,
+            FullNameKa = employee.FullNameKa,
+            PositionKa = employee.PositionKa,
+            BiographyKa = employee.BiographyKa,
             SortOrder = employee.SortOrder,
             IsActive = employee.IsActive,
             ExistingImageUrl = employee.ImageUrl
@@ -191,6 +194,9 @@ public class AdminEmployeesController : Controller
         FullName = model.FullName,
         Position = model.Position,
         Biography = model.Biography,
+        FullNameKa = model.FullNameKa,
+        PositionKa = model.PositionKa,
+        BiographyKa = model.BiographyKa,
         ImageUrl = imageUrl,
         SortOrder = model.SortOrder,
         IsActive = model.IsActive

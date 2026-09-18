@@ -68,6 +68,41 @@ public class ProjectFormViewModel
     [Display(Name = "Challenges")]
     public string? Challenges { get; set; }
 
+    // --- Georgian version. Every field is optional; an empty one shows the
+    // English text to visitors reading the site in Georgian. ---
+
+    [StringLength(200)]
+    [Display(Name = "Title (Georgian)")]
+    public string? TitleKa { get; set; }
+
+    [StringLength(100)]
+    [Display(Name = "Construction category (Georgian)")]
+    public string? CategoryKa { get; set; }
+
+    [StringLength(400)]
+    [Display(Name = "Short description (Georgian)")]
+    public string? ShortDescriptionKa { get; set; }
+
+    [StringLength(20000)]
+    [Display(Name = "Full description (Georgian)")]
+    public string? DescriptionKa { get; set; }
+
+    [StringLength(60)]
+    [Display(Name = "Duration (Georgian)")]
+    public string? DurationKa { get; set; }
+
+    [StringLength(10000)]
+    [Display(Name = "Timeline (Georgian)")]
+    public string? TimelineKa { get; set; }
+
+    [StringLength(10000)]
+    [Display(Name = "Materials and methods (Georgian)")]
+    public string? MaterialsUsedKa { get; set; }
+
+    [StringLength(10000)]
+    [Display(Name = "Challenges (Georgian)")]
+    public string? ChallengesKa { get; set; }
+
     [Display(Name = "Visible on the public site")]
     public bool IsActive { get; set; } = true;
 
@@ -108,6 +143,20 @@ public class EmployeeFormViewModel
     [Display(Name = "Biography")]
     public string? Biography { get; set; }
 
+    // --- Georgian version; an empty field falls back to English. ---
+
+    [StringLength(150)]
+    [Display(Name = "Full name (Georgian)")]
+    public string? FullNameKa { get; set; }
+
+    [StringLength(120)]
+    [Display(Name = "Position (Georgian)")]
+    public string? PositionKa { get; set; }
+
+    [StringLength(5000)]
+    [Display(Name = "Biography (Georgian)")]
+    public string? BiographyKa { get; set; }
+
     [Range(0, 9999, ErrorMessage = "Display order must be between 0 and 9999.")]
     [Display(Name = "Display order")]
     public int SortOrder { get; set; }
@@ -144,6 +193,16 @@ public class CompanySettingsViewModel
     [StringLength(5000)]
     [Display(Name = "Company description")]
     public string? Description { get; set; }
+
+    // --- Georgian version; an empty field falls back to English. ---
+
+    [StringLength(300)]
+    [Display(Name = "Business address (Georgian)")]
+    public string? AddressKa { get; set; }
+
+    [StringLength(5000)]
+    [Display(Name = "Company description (Georgian)")]
+    public string? DescriptionKa { get; set; }
 }
 
 /// <summary>Row shape for the admin project and employee listings.</summary>

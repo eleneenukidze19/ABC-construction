@@ -37,6 +37,31 @@ public class RateLimitingOptions
     public int QueueLimit { get; set; }
 }
 
+/// <summary>Public site languages, bound from the "Localization" section.</summary>
+public class SiteLanguageOptions
+{
+    public const string SectionName = "Localization";
+
+    /// <summary>
+    /// Language a visitor sees until they pick one with the header switcher.
+    /// Must be one of <see cref="SupportedCultures"/>.
+    /// </summary>
+    public string DefaultCulture { get; set; } = "ka";
+
+    /// <summary>
+    /// Empty by default rather than pre-filled: the configuration binder merges
+    /// into an existing array, so a pre-filled default could never be narrowed.
+    /// </summary>
+    public string[] SupportedCultures { get; set; } = Array.Empty<string>();
+
+    /// <summary>Supported cultures with the default guaranteed to be first and present.</summary>
+    public IReadOnlyList<string> EffectiveCultures =>
+        new[] { DefaultCulture }
+            .Concat(SupportedCultures.Length > 0 ? SupportedCultures : new[] { "ka", "en" })
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToList();
+}
+
 /// <summary>Initial admin account, bound from the "AdminSeed" section.</summary>
 public class AdminSeedOptions
 {

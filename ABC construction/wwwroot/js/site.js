@@ -19,10 +19,14 @@
             return;
         }
 
+        // Labels come from the markup so they follow the page's language.
+        var openLabel = toggle.getAttribute("data-label-open") || "Open menu";
+        var closeLabel = toggle.getAttribute("data-label-close") || "Close menu";
+
         function setOpen(open) {
             drawer.setAttribute("data-open", open ? "true" : "false");
             toggle.setAttribute("aria-expanded", open ? "true" : "false");
-            toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+            toggle.setAttribute("aria-label", open ? closeLabel : openLabel);
         }
 
         toggle.addEventListener("click", function () {
@@ -68,13 +72,18 @@
         var dialog = document.createElement("dialog");
         dialog.className = "lightbox";
         dialog.innerHTML =
-            '<button type="button" class="lightbox__close" aria-label="Close image">&times;</button>' +
+            '<button type="button" class="lightbox__close">&times;</button>' +
             '<img class="lightbox__img" alt="" />';
 
         document.body.appendChild(dialog);
 
         var image = dialog.querySelector(".lightbox__img");
         var closeButton = dialog.querySelector(".lightbox__close");
+
+        // Set as an attribute, not in the HTML string, so a translated label
+        // can never break the markup.
+        closeButton.setAttribute("aria-label",
+            gallery.getAttribute("data-close-label") || "Close image");
 
         gallery.addEventListener("click", function (event) {
             var trigger = event.target.closest("[data-lightbox]");

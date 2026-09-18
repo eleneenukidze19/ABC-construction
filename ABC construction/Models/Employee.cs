@@ -20,6 +20,16 @@ public class Employee
 
     public string? Biography { get; set; }
 
+    // --- Georgian versions; an empty one falls back to English. ---
+
+    [MaxLength(150)]
+    public string? FullNameKa { get; set; }
+
+    [MaxLength(120)]
+    public string? PositionKa { get; set; }
+
+    public string? BiographyKa { get; set; }
+
     [MaxLength(400)]
     public string? ImageUrl { get; set; }
 

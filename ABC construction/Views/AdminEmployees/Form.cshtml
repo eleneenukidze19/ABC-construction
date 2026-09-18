@@ -59,6 +59,34 @@
                     <span class="field__error" asp-validation-for="Biography"></span>
                 </div>
 
+                <fieldset class="field--full form-section">
+                    <legend>Georgian version</legend>
+                    <span class="field__help">
+                        Optional. Shown to visitors reading the site in Georgian, which is
+                        the default language. Any field left empty shows the English text instead.
+                    </span>
+
+                    <div class="form-grid form-grid--2">
+                        <div class="field">
+                            <label asp-for="FullNameKa">Full name</label>
+                            <input asp-for="FullNameKa" type="text" lang="ka" />
+                            <span class="field__error" asp-validation-for="FullNameKa"></span>
+                        </div>
+
+                        <div class="field">
+                            <label asp-for="PositionKa">Position</label>
+                            <input asp-for="PositionKa" type="text" lang="ka" />
+                            <span class="field__error" asp-validation-for="PositionKa"></span>
+                        </div>
+
+                        <div class="field field--full">
+                            <label asp-for="BiographyKa">Biography</label>
+                            <textarea asp-for="BiographyKa" rows="6" lang="ka"></textarea>
+                            <span class="field__error" asp-validation-for="BiographyKa"></span>
+                        </div>
+                    </div>
+                </fieldset>
+
                 <div class="field">
                     <label asp-for="SortOrder">Display order</label>
                     <input asp-for="SortOrder" type="number" min="0" max="9999" inputmode="numeric" />

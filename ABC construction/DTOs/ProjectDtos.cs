@@ -13,6 +13,12 @@ public class ProjectSummaryDto
     public string Category { get; set; } = string.Empty;
     public string? ImageUrl { get; set; }
 
+    // Georgian versions; null when not translated.
+    public string? TitleKa { get; set; }
+    public string? ShortDescriptionKa { get; set; }
+    public string? DurationKa { get; set; }
+    public string? CategoryKa { get; set; }
+
     /// <summary>
     /// Always true on public responses, which only ever contain active
     /// projects. Carried on the summary so the admin listing can show the
@@ -28,9 +34,20 @@ public class ProjectDetailDto : ProjectSummaryDto
     public string? Timeline { get; set; }
     public string? MaterialsUsed { get; set; }
     public string? Challenges { get; set; }
+    public string? DescriptionKa { get; set; }
+    public string? TimelineKa { get; set; }
+    public string? MaterialsUsedKa { get; set; }
+    public string? ChallengesKa { get; set; }
     public DateTime CreatedDate { get; set; }
     public DateTime? UpdatedDate { get; set; }
     public List<ProjectImageDto> Images { get; set; } = new();
+}
+
+/// <summary>A category on the public filter bar, with its Georgian label if one was entered.</summary>
+public class ProjectCategoryDto
+{
+    public string Name { get; set; } = string.Empty;
+    public string? NameKa { get; set; }
 }
 
 public class ProjectImageDto
@@ -79,6 +96,32 @@ public class ProjectWriteDto
 
     [StringLength(10000)]
     public string? Challenges { get; set; }
+
+    // Georgian versions, all optional: an empty one falls back to English.
+
+    [StringLength(200)]
+    public string? TitleKa { get; set; }
+
+    [StringLength(20000)]
+    public string? DescriptionKa { get; set; }
+
+    [StringLength(400)]
+    public string? ShortDescriptionKa { get; set; }
+
+    [StringLength(60)]
+    public string? DurationKa { get; set; }
+
+    [StringLength(100)]
+    public string? CategoryKa { get; set; }
+
+    [StringLength(10000)]
+    public string? TimelineKa { get; set; }
+
+    [StringLength(10000)]
+    public string? MaterialsUsedKa { get; set; }
+
+    [StringLength(10000)]
+    public string? ChallengesKa { get; set; }
 
     public bool IsActive { get; set; } = true;
 }

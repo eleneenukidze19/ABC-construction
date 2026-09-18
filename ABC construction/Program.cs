@@ -1,3 +1,5 @@
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 using System.Threading.RateLimiting;
 using ABC_construction.Configuration;
 using ABC_construction.Data;
@@ -7,9 +9,11 @@ using ABC_construction.Models;
 using ABC_construction.Repositories;
 using ABC_construction.Services;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.WebEncoders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +28,9 @@ builder.Services.Configure<RateLimitingOptions>(
     builder.Configuration.GetSection(RateLimitingOptions.SectionName));
 builder.Services.Configure<AdminSeedOptions>(
     builder.Configuration.GetSection(AdminSeedOptions.SectionName));
+
+builder.Services.Configure<SiteLanguageOptions>(
+    builder.Configuration.GetSection(SiteLanguageOptions.SectionName));
 
 var rateLimitingOptions = builder.Configuration
     .GetSection(RateLimitingOptions.SectionName)
@@ -134,6 +141,51 @@ builder.Services.AddControllersWithViews(options =>
 {
     // Anti-forgery on every non-GET MVC form post (README section 19).
     options.Filters.Add(new Microsoft.AspNetCore.Mvc.AutoValidateAntiforgeryTokenAttribute());
+})
+.AddViewLocalization();
+
+// ---------------------------------------------------------------------------
+// Languages
+//
+// Public pages come in Georgian (the default) and English. Interface text is
+// translated through Resources/SharedResource.ka.resx; admin-entered content
+// carries its own Georgian fields (see ContentLanguage).
+// ---------------------------------------------------------------------------
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+// Razor's encoder by default only passes Latin letters through and writes all
+// others as numeric entities, which would inflate every Georgian page several
+// times over. HTML-significant characters are still encoded.
+builder.Services.Configure<WebEncoderOptions>(options =>
+    options.TextEncoderSettings = new TextEncoderSettings(UnicodeRanges.All));
+
+var siteLanguages = builder.Configuration
+    .GetSection(SiteLanguageOptions.SectionName)
+    .Get<SiteLanguageOptions>() ?? new SiteLanguageOptions();
+
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var cultures = siteLanguages.EffectiveCultures.ToArray();
+
+    options.SetDefaultCulture(siteLanguages.DefaultCulture)
+        .AddSupportedCultures(cultures)
+        .AddSupportedUICultures(cultures);
+
+    // Only an explicit choice changes the language. The browser's
+    // Accept-Language header is deliberately ignored: most visitors' browsers
+    // are set to English even when they would rather read Georgian, and search
+    // engine crawlers would otherwise index the site in English only.
+    options.RequestCultureProviders = new List<IRequestCultureProvider>
+    {
+        // The admin panel and API are English-only. Pinning them also keeps
+        // form and JSON parsing of dates and numbers independent of whatever
+        // language the signed-in admin last browsed the public site in.
+        new CustomRequestCultureProvider(context =>
+            Task.FromResult<ProviderCultureResult?>(IsEnglishOnlyPath(context.Request.Path)
+                ? new ProviderCultureResult("en")
+                : null)),
+        new CookieRequestCultureProvider()
+    };
 });
 
 builder.Services.AddOpenApi();
@@ -224,6 +276,9 @@ app.UseForwardedHeaders();
 // First, so it wraps everything downstream.
 app.UseGlobalExceptionHandling();
 
+// Early, so the error page re-executed below renders in the visitor's language.
+app.UseRequestLocalization();
+
 // Re-runs the pipeline against the error action for bare status codes (mainly
 // 404) so visitors get the styled page instead of an empty browser default.
 //
@@ -278,3 +333,7 @@ app.MapControllers();
 await DatabaseSeeder.MigrateAndSeedAsync(app.Services);
 
 app.Run();
+
+static bool IsEnglishOnlyPath(PathString path) =>
+    path.StartsWithSegments("/admin", StringComparison.OrdinalIgnoreCase)
+    || path.StartsWithSegments("/api", StringComparison.OrdinalIgnoreCase);

@@ -32,6 +32,12 @@ public interface IProjectRepository
 
     Task<IReadOnlyList<string>> GetCategoriesAsync(CancellationToken cancellationToken = default);
 
+    /// <summary>
+    /// Active categories paired with a Georgian label, taken from whichever
+    /// project in the category has one filled in (null if none do).
+    /// </summary>
+    Task<IReadOnlyList<(string Name, string? NameKa)>> GetCategoryLabelsAsync(CancellationToken cancellationToken = default);
+
     Task<int> CountAsync(bool includeInactive = false, CancellationToken cancellationToken = default);
 
     Task<bool> ExistsAsync(int id, CancellationToken cancellationToken = default);

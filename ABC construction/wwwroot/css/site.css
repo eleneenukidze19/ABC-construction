@@ -63,8 +63,10 @@
     --c-success-bg: #E8F5E9;
 
     /* Type */
-    --font-display: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
-    --font-body: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+    /* Barlow has no Georgian letters; the browser takes those from Noto Sans
+       Georgian and keeps Barlow for Latin text and digits. */
+    --font-display: "Barlow Condensed", "Noto Sans Georgian", "Arial Narrow", system-ui, sans-serif;
+    --font-body: "Barlow", "Noto Sans Georgian", system-ui, -apple-system, "Segoe UI", sans-serif;
     --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", monospace;
 
     /* Type scale (1.25) — base stays 16px so mobile Safari never auto-zooms */
@@ -427,6 +429,43 @@ hr { border: 0; border-top: var(--rule) solid var(--border-strong); margin: var(
 .nav__link[aria-current="page"] {
     border-bottom-color: var(--c-yellow);
     font-weight: 700;
+}
+
+.site-header__end {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+}
+
+/* Language switcher: always visible, including beside the mobile menu button */
+.lang-switch {
+    display: flex;
+    border: var(--rule) solid var(--c-black);
+    border-radius: var(--radius);
+}
+
+.lang-switch__link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    padding: 0 var(--sp-2);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    transition: background-color var(--dur) var(--ease-out);
+}
+
+.lang-switch__link + .lang-switch__link { border-left: var(--rule) solid var(--c-black); }
+
+.lang-switch__link:hover { background: var(--bg-sunken); }
+
+/* Current language marked by fill, and by aria-current for screen readers */
+.lang-switch__link[aria-current="true"] {
+    background: var(--c-yellow);
+    color: var(--c-black);
 }
 
 .nav-toggle {

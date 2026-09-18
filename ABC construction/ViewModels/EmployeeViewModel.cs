@@ -24,10 +24,19 @@ public class EmployeeViewModel
             }
 
             return parts.Length == 1
-                ? parts[0][..1].ToUpperInvariant()
-                : $"{parts[0][0]}{parts[^1][0]}".ToUpperInvariant();
+                ? Upper(parts[0][0]).ToString()
+                : $"{Upper(parts[0][0])}{Upper(parts[^1][0])}";
         }
     }
+
+    /// <summary>
+    /// Georgian letters are left as they are: their capital forms (Mtavruli)
+    /// are not used for initials and are missing from many fonts.
+    /// </summary>
+    private static char Upper(char c) =>
+        c is >= 'Ⴀ' and <= 'ჿ' or >= 'Ა' and <= 'Ჿ' or >= 'ⴀ' and <= '⴯'
+            ? c
+            : char.ToUpperInvariant(c);
 }
 
 /// <summary>Backing model for the /employees page.</summary>

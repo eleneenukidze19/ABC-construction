@@ -9,6 +9,9 @@ public class EmployeeDto
     public string FullName { get; set; } = string.Empty;
     public string Position { get; set; } = string.Empty;
     public string? Biography { get; set; }
+    public string? FullNameKa { get; set; }
+    public string? PositionKa { get; set; }
+    public string? BiographyKa { get; set; }
     public string? ImageUrl { get; set; }
     public int SortOrder { get; set; }
     public bool IsActive { get; set; }
@@ -27,6 +30,17 @@ public class EmployeeWriteDto
 
     [StringLength(5000)]
     public string? Biography { get; set; }
+
+    // Georgian versions, all optional: an empty one falls back to English.
+
+    [StringLength(150)]
+    public string? FullNameKa { get; set; }
+
+    [StringLength(120)]
+    public string? PositionKa { get; set; }
+
+    [StringLength(5000)]
+    public string? BiographyKa { get; set; }
 
     [StringLength(400)]
     public string? ImageUrl { get; set; }

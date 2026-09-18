@@ -29,7 +29,9 @@ public class ProjectsController : Controller
         var model = new ProjectListViewModel
         {
             Projects = result.Items.Select(p => p.ToViewModel()).ToList(),
-            Categories = await _projectService.GetCategoriesAsync(cancellationToken),
+            Categories = (await _projectService.GetCategoryOptionsAsync(cancellationToken))
+                .Select(c => c.ToOption())
+                .ToList(),
             SelectedCategory = category,
             Page = result.Page,
             PageSize = result.PageSize,

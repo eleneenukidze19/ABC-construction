@@ -53,6 +53,30 @@ public class Project
     /// <summary>Notable engineering challenges and how they were solved.</summary>
     public string? Challenges { get; set; }
 
+    // --- Georgian versions of the text fields above. All optional: an empty
+    // one falls back to the English text on the Georgian site. ---
+
+    [MaxLength(200)]
+    public string? TitleKa { get; set; }
+
+    public string? DescriptionKa { get; set; }
+
+    [MaxLength(400)]
+    public string? ShortDescriptionKa { get; set; }
+
+    [MaxLength(60)]
+    public string? DurationKa { get; set; }
+
+    /// <summary>Display label only; filtering always uses <see cref="Category"/>.</summary>
+    [MaxLength(100)]
+    public string? CategoryKa { get; set; }
+
+    public string? TimelineKa { get; set; }
+
+    public string? MaterialsUsedKa { get; set; }
+
+    public string? ChallengesKa { get; set; }
+
     public DateTime CreatedDate { get; set; }
 
     public DateTime? UpdatedDate { get; set; }

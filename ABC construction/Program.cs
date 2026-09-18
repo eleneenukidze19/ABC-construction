@@ -6,6 +6,7 @@ using ABC_construction.Middleware;
 using ABC_construction.Models;
 using ABC_construction.Repositories;
 using ABC_construction.Services;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
@@ -191,6 +192,22 @@ builder.Services.AddRateLimiter(options =>
     };
 });
 
+// Behind a hosting platform's TLS-terminating proxy the app itself sees plain
+// HTTP, so UseHttpsRedirection would loop and the auth cookie's Secure policy
+// would drop it. These headers restore the original scheme and client IP.
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+
+    // The proxy's address is assigned by the platform and not known ahead of
+    // time, so the default allow-list of a single loopback hop cannot be used.
+    // Safe only because nothing but that proxy can reach the container; if this
+    // is ever hosted where the app's port is publicly reachable, pin KnownProxies
+    // instead, or a caller could spoof either header.
+    options.KnownIPNetworks.Clear();
+    options.KnownProxies.Clear();
+});
+
 // Static assets are fingerprinted and cached hard (README section 23).
 builder.Services.AddResponseCompression(options => options.EnableForHttps = true);
 
@@ -199,6 +216,10 @@ var app = builder.Build();
 // ---------------------------------------------------------------------------
 // HTTP pipeline — order matters
 // ---------------------------------------------------------------------------
+
+// Before everything else: the cookie policy and UseHttpsRedirection below must
+// see the original https scheme, not the proxy's internal http hop.
+app.UseForwardedHeaders();
 
 // First, so it wraps everything downstream.
 app.UseGlobalExceptionHandling();

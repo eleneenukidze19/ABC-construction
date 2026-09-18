@@ -1,0 +1,13 @@
+# Keep build context small and never ship local state or secrets into an image.
+**/bin/
+**/obj/
+**/.vs/
+**/*.user
+**/*.db
+**/*.db-shm
+**/*.db-wal
+.git/
+.github/
+.gitignore
+Dockerfile
+.dockerignore

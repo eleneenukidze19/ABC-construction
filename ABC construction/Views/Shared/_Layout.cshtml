@@ -111,7 +111,14 @@
                     <h2>Get in touch</h2>
                     <ul class="site-footer__links">
                         <li><a href="/contact">Request a quote</a></li>
-                        <li><a href="/admin">Staff login</a></li>
+                        @* The sign-in page is deliberately not advertised to visitors:
+                           staff reach it by bookmark, so a public link only invites
+                           passers-by to try passwords against it. Signed-in staff keep
+                           a way back to the panel from any public page. *@
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <li><a href="/admin">Admin dashboard</a></li>
+                        }
                     </ul>
                 </div>
             </div>

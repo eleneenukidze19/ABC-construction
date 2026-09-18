@@ -97,9 +97,11 @@ public static class MappingExtensions
         project.Title = dto.Title.Trim();
         project.Description = dto.Description.Trim();
         project.ShortDescription = dto.ShortDescription.Trim();
-        project.Duration = dto.Duration.Trim();
+        project.Duration = Normalise(dto.Duration);
         // Postgres 'timestamp with time zone' requires UTC through Npgsql.
-        project.CompletionDate = DateTime.SpecifyKind(dto.CompletionDate, DateTimeKind.Utc);
+        project.CompletionDate = dto.CompletionDate is { } date
+            ? DateTime.SpecifyKind(date, DateTimeKind.Utc)
+            : null;
         project.Category = dto.Category.Trim();
         project.ImageUrl = Normalise(dto.ImageUrl);
         project.Timeline = Normalise(dto.Timeline);

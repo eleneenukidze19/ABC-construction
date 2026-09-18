@@ -48,9 +48,9 @@
                             </td>
                             <td>@project.Title</td>
                             <td>@project.Category</td>
-                            <td>@project.Duration</td>
+                            <td>@(string.IsNullOrWhiteSpace(project.Duration) ? "—" : project.Duration)</td>
                             <td class="num">
-                                @project.CompletionDate.ToString("MMM yyyy", System.Globalization.CultureInfo.InvariantCulture)
+                                @(project.CompletionDate?.ToString("MMM yyyy", System.Globalization.CultureInfo.InvariantCulture) ?? "—")
                             </td>
                             <td>
                                 @* Badge carries a word, so status never depends on colour *@

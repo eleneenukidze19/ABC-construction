@@ -22,12 +22,16 @@ public class Project
     [MaxLength(400)]
     public string ShortDescription { get; set; } = string.Empty;
 
-    /// <summary>Human-readable duration as shown to visitors, e.g. "8 months".</summary>
-    [Required]
+    /// <summary>
+    /// Human-readable duration as shown to visitors, e.g. "8 months". Optional:
+    /// older portfolio projects often have no reliable figure, and the site
+    /// hides the field rather than showing a placeholder.
+    /// </summary>
     [MaxLength(60)]
-    public string Duration { get; set; } = string.Empty;
+    public string? Duration { get; set; }
 
-    public DateTime CompletionDate { get; set; }
+    /// <summary>Optional for the same reason as <see cref="Duration"/>.</summary>
+    public DateTime? CompletionDate { get; set; }
 
     [Required]
     [MaxLength(100)]

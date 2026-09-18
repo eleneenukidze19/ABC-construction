@@ -1,33 +1,34 @@
 @model HomeViewModel
 @{
     ViewData["Title"] = null; // Home uses the bare brand name as its title
-    ViewData["Description"] = "ABC Construction — commercial, residential and industrial building contractors. Structural work, fit-out and renovation delivered on programme.";
+    ViewData["Description"] = "ABC Construction delivers construction and fit-out services from design and installation to final handover, with a focus on quality, reliability, schedule and value.";
 
     // Static capability list: these are service lines, not database records, so
     // they are not admin-managed. Move to the DB if the client needs to edit them.
     var services = new[]
     {
-        ("01", "Commercial build", "Ground-up commercial structures, from groundworks through to handover."),
-        ("02", "Renovation", "Structural upgrades and full refurbishment of occupied and vacant properties."),
-        ("03", "Industrial", "Warehousing, plant facilities and heavy-duty floor and frame systems."),
-        ("04", "Fit-out", "Interior fit-out and services coordination finished to specification.")
+        ("01", "Construction", "We deliver construction projects from design and fit-out through installation to final handover."),
+        ("02", "Engineering", "Engineering leadership is present at every phase, ensuring quality, reliability and effective project delivery."),
+        ("03", "Project Delivery", "We deliver projects with consistent adherence to schedule and quality standards."),
+        ("04", "Design & Installation", "From design to installation and final handover, we create spaces that work.")
     };
 }
 
 <section class="hero">
     <div class="container hero__inner">
         <div>
-            <p class="eyebrow">Established contractors</p>
+            <p class="eyebrow">Construction &amp; Fit-out</p>
 
             <h1 class="hero__title">
                 We build<br />
-                <em>structures that hold.</em>
+                <em>high-quality, reliable spaces.</em>
             </h1>
 
             <p class="hero__lead">
-                ABC Construction delivers commercial, residential and industrial
-                projects across the region. Planned properly, priced honestly,
-                and handed over on programme.
+                We are a construction and fit-out team delivering high-quality,
+                reliable spaces on time and on budget. From design and engineering
+                to installation and final handover, we make the entire building
+                process easy for our clients.
             </p>
 
             <div class="hero__actions">
@@ -68,10 +69,10 @@
                 <p class="eyebrow">Who we are</p>
                 <h2>A contractor that turns up and finishes</h2>
                 <p>
-                    We are a directly-employed building contractor. That means the
-                    people who price your job are the people who run it, and the
-                    trades on site are ours — not a chain of subcontractors you
-                    never meet.
+                    We build high-quality, reliable spaces on time and on budget,
+                    while making the entire building process easy for our clients.
+                    Our engineering leadership is present at every phase, from
+                    design and installation to final handover.
                 </p>
             </div>
             <a class="btn btn--secondary" href="/employees">Meet the team</a>
@@ -130,7 +131,7 @@
 <section class="cta-band">
     <div class="container cta-band__inner">
         <div>
-            <h2>Got a project to price?</h2>
+            <h2>Let’s build something that lasts.</h2>
             <p>
                 Send us the drawings, or just tell us roughly what you need. We
                 will tell you honestly whether we are the right contractor for it.

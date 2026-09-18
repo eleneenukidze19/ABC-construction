@@ -89,7 +89,7 @@
                             </td>
                             <td>@project.Title</td>
                             <td>@project.Category</td>
-                            <td class="num">@project.CompletionDateDisplay</td>
+                            <td class="num">@(project.CompletionDateDisplay ?? "—")</td>
                             <td>
                                 <a class="btn btn--secondary btn--sm" href="/admin/projects/edit/@project.Id">
                                     Edit<span class="visually-hidden"> @project.Title</span>

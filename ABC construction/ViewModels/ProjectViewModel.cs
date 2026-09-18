@@ -9,14 +9,16 @@ public class ProjectViewModel
     public int Id { get; set; }
     public string Title { get; set; } = string.Empty;
     public string ShortDescription { get; set; } = string.Empty;
-    public string Duration { get; set; } = string.Empty;
+    public string? Duration { get; set; }
     public string Category { get; set; } = string.Empty;
-    public DateTime CompletionDate { get; set; }
+    public DateTime? CompletionDate { get; set; }
     public string? ImageUrl { get; set; }
 
-    /// <summary>Pre-formatted for display, e.g. "March 2024".</summary>
-    public string CompletionDateDisplay =>
-        CompletionDate.ToString("MMMM yyyy", System.Globalization.CultureInfo.InvariantCulture);
+    /// <summary>Pre-formatted for display, e.g. "March 2024"; null when no date is recorded.</summary>
+    public string? CompletionDateDisplay =>
+        CompletionDate?.ToString("MMMM yyyy", System.Globalization.CultureInfo.InvariantCulture);
+
+    public bool HasDuration => !string.IsNullOrWhiteSpace(Duration);
 
     /// <summary>Placeholder keeps card layouts intact when no cover image is set.</summary>
     public string DisplayImageUrl =>

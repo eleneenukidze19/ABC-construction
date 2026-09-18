@@ -1,14 +1,17 @@
+using System.Reflection;
 using ABC_construction.Configuration;
 using ABC_construction.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Options;
 
 namespace ABC_construction.Data;
 
 /// <summary>
-/// Applies pending migrations and ensures the admin role and initial account
-/// exist (README section 5).
+/// Applies pending migrations, ensures the admin role and initial account
+/// exist (README section 5), and loads <see cref="InitialContent"/> into a new
+/// database.
 /// </summary>
 public static class DatabaseSeeder
 {
@@ -20,10 +23,15 @@ public static class DatabaseSeeder
         var logger = provider.GetRequiredService<ILogger<Program>>();
         var context = provider.GetRequiredService<ApplicationDbContext>();
 
-        await CreateSchemaAsync(context, logger, cancellationToken);
+        var isNewContentStore = await CreateSchemaAsync(context, logger, cancellationToken);
 
         await SeedRolesAsync(provider, logger);
         await SeedAdminUserAsync(provider, logger);
+
+        if (isNewContentStore)
+        {
+            await SeedInitialContentAsync(context, logger, cancellationToken);
+        }
     }
 
     /// <summary>
@@ -41,7 +49,15 @@ public static class DatabaseSeeder
     /// remains the migrated, production path.
     /// </para>
     /// </summary>
-    private static async Task CreateSchemaAsync(
+    /// <returns>
+    /// True the one time a database should receive <see cref="InitialContent"/>:
+    /// when the SQLite file was just created, or when this run applied the
+    /// PostgreSQL migration that introduced that content. Tying it to a
+    /// one-off event rather than "the table is empty" matters because admin
+    /// deletes are hard deletes — an empty-table check would restore every
+    /// deleted project on the next restart.
+    /// </returns>
+    private static async Task<bool> CreateSchemaAsync(
         ApplicationDbContext context,
         ILogger logger,
         CancellationToken cancellationToken)
@@ -57,11 +73,50 @@ public static class DatabaseSeeder
                     ? "SQLite dev database created from the model (no migration history). Use PostgreSQL for production."
                     : "Using the existing SQLite dev database. Delete the .db file to rebuild it after model changes.");
 
-            return;
+            return created;
         }
+
+        var pending = await context.Database.GetPendingMigrationsAsync(cancellationToken);
 
         await context.Database.MigrateAsync(cancellationToken);
         logger.LogInformation("Database migrations applied.");
+
+        return pending.Contains(InitialContentMigrationId);
+    }
+
+    private static readonly string InitialContentMigrationId =
+        typeof(Migrations.MakeProjectDateAndDurationOptional).GetCustomAttribute<MigrationAttribute>()!.Id;
+
+    /// <summary>
+    /// Loads the checklist projects and team. Each table is only filled if it
+    /// is still empty, so records an admin entered before upgrading are never
+    /// mixed with the defaults.
+    /// </summary>
+    private static async Task SeedInitialContentAsync(
+        ApplicationDbContext context,
+        ILogger logger,
+        CancellationToken cancellationToken)
+    {
+        var now = DateTime.UtcNow;
+
+        if (!await context.Projects.AnyAsync(cancellationToken))
+        {
+            // Undated projects list highest Id first, so inserting in reverse
+            // shows them on the site in checklist order.
+            context.Projects.AddRange(InitialContent.CreateProjects(now).Reverse());
+        }
+
+        if (!await context.Employees.AnyAsync(cancellationToken))
+        {
+            context.Employees.AddRange(InitialContent.CreateEmployees(now));
+        }
+
+        var added = await context.SaveChangesAsync(cancellationToken);
+
+        if (added > 0)
+        {
+            logger.LogInformation("Loaded {Count} initial projects and team members.", added);
+        }
     }
 
     /// <summary>

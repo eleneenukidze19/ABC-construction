@@ -8,8 +8,8 @@ public class ProjectSummaryDto
     public int Id { get; set; }
     public string Title { get; set; } = string.Empty;
     public string ShortDescription { get; set; } = string.Empty;
-    public string Duration { get; set; } = string.Empty;
-    public DateTime CompletionDate { get; set; }
+    public string? Duration { get; set; }
+    public DateTime? CompletionDate { get; set; }
     public string Category { get; set; } = string.Empty;
     public string? ImageUrl { get; set; }
 
@@ -59,12 +59,10 @@ public class ProjectWriteDto
     [StringLength(400, MinimumLength = 10)]
     public string ShortDescription { get; set; } = string.Empty;
 
-    [Required(ErrorMessage = "Duration is required.")]
     [StringLength(60)]
-    public string Duration { get; set; } = string.Empty;
+    public string? Duration { get; set; }
 
-    [Required(ErrorMessage = "Completion date is required.")]
-    public DateTime CompletionDate { get; set; }
+    public DateTime? CompletionDate { get; set; }
 
     [Required(ErrorMessage = "Category is required.")]
     [StringLength(100)]

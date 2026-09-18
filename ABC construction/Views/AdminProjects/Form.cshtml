@@ -66,22 +66,17 @@
                 </div>
 
                 <div class="field">
-                    <label asp-for="Duration">
-                        Duration <span class="req" aria-hidden="true">*</span>
-                        <span class="visually-hidden">(required)</span>
-                    </label>
-                    <input asp-for="Duration" type="text" placeholder="8 months" required />
-                    <span class="field__help">Free text, shown exactly as typed. For example &ldquo;8 months&rdquo;.</span>
+                    <label asp-for="Duration">Duration</label>
+                    <input asp-for="Duration" type="text" placeholder="8 months" />
+                    <span class="field__help">Optional. Shown exactly as typed, for example &ldquo;8 months&rdquo;. Leave empty if unknown.</span>
                     <span class="field__error" asp-validation-for="Duration"></span>
                 </div>
 
                 <div class="field">
-                    <label asp-for="CompletionDate">
-                        Completion date <span class="req" aria-hidden="true">*</span>
-                        <span class="visually-hidden">(required)</span>
-                    </label>
+                    <label asp-for="CompletionDate">Completion date</label>
                     <input asp-for="CompletionDate" type="date"
-                           value="@Model.CompletionDate.ToString("yyyy-MM-dd")" required />
+                           value="@Model.CompletionDate?.ToString("yyyy-MM-dd")" />
+                    <span class="field__help">Optional. Leave empty if unknown; the site then hides the date.</span>
                     <span class="field__error" asp-validation-for="CompletionDate"></span>
                 </div>
 

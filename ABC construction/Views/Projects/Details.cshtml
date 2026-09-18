@@ -96,18 +96,24 @@
                     <dt>Category</dt>
                     <dd>@Model.Category</dd>
                 </div>
-                <div>
-                    <dt>Duration</dt>
-                    <dd>@Model.Duration</dd>
-                </div>
-                <div>
-                    <dt>Completed</dt>
-                    <dd>
-                        <time datetime="@Model.CompletionDate.ToString("yyyy-MM-dd")">
-                            @Model.CompletionDateDisplay
-                        </time>
-                    </dd>
-                </div>
+                @if (Model.HasDuration)
+                {
+                    <div>
+                        <dt>Duration</dt>
+                        <dd>@Model.Duration</dd>
+                    </div>
+                }
+                @if (Model.CompletionDate is { } completed)
+                {
+                    <div>
+                        <dt>Completed</dt>
+                        <dd>
+                            <time datetime="@completed.ToString("yyyy-MM-dd")">
+                                @Model.CompletionDateDisplay
+                            </time>
+                        </dd>
+                    </div>
+                }
             </dl>
 
             <a class="btn btn--primary btn--block" href="/contact" style="margin-top: var(--sp-5);">

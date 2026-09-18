@@ -17,15 +17,25 @@
 
         <p class="project-card__desc">@Model.ShortDescription</p>
 
-        <dl class="project-card__meta">
-            <div>
-                <dt>Duration</dt>
-                <dd>@Model.Duration</dd>
-            </div>
-            <div>
-                <dt>Completed</dt>
-                <dd>@Model.CompletionDateDisplay</dd>
-            </div>
-        </dl>
+        @* Both facts are optional; unknown ones are left out, not shown as blanks *@
+        @if (Model.HasDuration || Model.CompletionDate is not null)
+        {
+            <dl class="project-card__meta">
+                @if (Model.HasDuration)
+                {
+                    <div>
+                        <dt>Duration</dt>
+                        <dd>@Model.Duration</dd>
+                    </div>
+                }
+                @if (Model.CompletionDate is not null)
+                {
+                    <div>
+                        <dt>Completed</dt>
+                        <dd>@Model.CompletionDateDisplay</dd>
+                    </div>
+                }
+            </dl>
+        }
     </div>
 </article>

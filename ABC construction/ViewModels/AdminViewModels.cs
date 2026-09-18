@@ -49,15 +49,13 @@ public class ProjectFormViewModel
     [Display(Name = "Full description")]
     public string Description { get; set; } = string.Empty;
 
-    [Required(ErrorMessage = "Enter how long the project took.")]
     [StringLength(60)]
     [Display(Name = "Duration")]
-    public string Duration { get; set; } = string.Empty;
+    public string? Duration { get; set; }
 
-    [Required(ErrorMessage = "Enter the completion date.")]
     [DataType(DataType.Date)]
     [Display(Name = "Completion date")]
-    public DateTime CompletionDate { get; set; } = DateTime.UtcNow.Date;
+    public DateTime? CompletionDate { get; set; }
 
     [StringLength(10000)]
     public string? Timeline { get; set; }
@@ -154,8 +152,8 @@ public class AdminProjectRowViewModel
     public int Id { get; set; }
     public string Title { get; set; } = string.Empty;
     public string Category { get; set; } = string.Empty;
-    public string Duration { get; set; } = string.Empty;
-    public DateTime CompletionDate { get; set; }
+    public string? Duration { get; set; }
+    public DateTime? CompletionDate { get; set; }
     public string? ImageUrl { get; set; }
     public bool IsActive { get; set; }
 

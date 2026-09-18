@@ -32,9 +32,7 @@ public class ProjectRepository : IProjectRepository
         // Count before paging so TotalCount reflects the filtered set.
         var totalCount = await query.CountAsync(cancellationToken);
 
-        var items = await query
-            .OrderByDescending(p => p.CompletionDate)
-            .ThenByDescending(p => p.Id)
+        var items = await Newest(query)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .AsNoTracking()
@@ -53,9 +51,7 @@ public class ProjectRepository : IProjectRepository
         int count,
         CancellationToken cancellationToken = default)
     {
-        return await BaseQuery(includeInactive: false)
-            .OrderByDescending(p => p.CompletionDate)
-            .ThenByDescending(p => p.Id)
+        return await Newest(BaseQuery(includeInactive: false))
             .Take(count)
             .AsNoTracking()
             .ToListAsync(cancellationToken);
@@ -137,4 +133,15 @@ public class ProjectRepository : IProjectRepository
         IQueryable<Project> query = _context.Projects;
         return includeInactive ? query : query.Where(p => p.IsActive);
     }
+
+    /// <summary>
+    /// Most recently completed first, undated projects after all dated ones.
+    /// The explicit HasValue key is needed because the providers disagree on
+    /// where NULLs sort: PostgreSQL puts them first in a descending order,
+    /// SQLite last.
+    /// </summary>
+    private static IOrderedQueryable<Project> Newest(IQueryable<Project> query) => query
+        .OrderByDescending(p => p.CompletionDate.HasValue)
+        .ThenByDescending(p => p.CompletionDate)
+        .ThenByDescending(p => p.Id);
 }
